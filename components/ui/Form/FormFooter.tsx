@@ -8,7 +8,7 @@ const FormFooter = ({
   isLogin,
 }: {
   buttonText: string;
-  showExtraText?: boolean;
+  showExtraText: boolean;
   isSignUp?: boolean;
   isLogin?: boolean;
 }) => {
