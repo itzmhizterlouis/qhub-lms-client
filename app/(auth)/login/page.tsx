@@ -1,12 +1,15 @@
-import FormHeading from '@/components/ui/Form/FormHeading'
-import React from 'react'
-
+import FormHeading from "@/components/ui/Form/FormHeading";
+import React from "react";
+import LoginForm from "./LoginForm";
+import FormFooter from "@/components/ui/Form/FormFooter";
 const Login = () => {
   return (
     <div>
-        <FormHeadig title="Welcome Back" />
+      <FormHeading title="Welcome Back" />
+      <LoginForm />
+      <FormFooter isLogin={true} buttonText="Log In" showExtraText={true} />
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
