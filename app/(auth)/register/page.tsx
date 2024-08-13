@@ -5,7 +5,7 @@ import FormFooter from "@/components/ui/Form/FormFooter";
 
 const Register = () => {
   return (
-    <div className="">
+    <div className="w-[450px]">
       <FormHeading title="Register an Organization" />
       <RegisterForm />
       <FormFooter buttonText="Sign Up" isSignUp={true} showExtraText={true} />

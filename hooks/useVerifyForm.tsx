@@ -1,9 +1,15 @@
 "use client";
-import React, { useState, useRef , RefObject } from "react";
+import React, { useState, useRef } from "react";
 
-const VerifyForm:React.FC = () => {
+const useVerifyForm = () => {
   const [code, setCode] = useState(new Array(6).fill(""));
   const inputRefs = useRef<HTMLInputElement[]>([]);
+
+  const handleRef = (el: HTMLInputElement | null, index: number) => {
+    if (el) {
+      inputRefs.current[index] = el;
+    }
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -39,26 +45,14 @@ const VerifyForm:React.FC = () => {
       }
     });
   };
-
-  return (
-    <div className="my-5">
-      <div className="space-x-2 flex justify-center items-center">
-        {code.map((digit, index) => (
-          <input
-            key={index}
-            type="text"
-            maxLength={1}
-            value={digit}
-            onChange={(e) => handleChange(e, index)}
-            onKeyDown={(e) => handleKeyDown(e, index)}
-            ref={(el) => (inputRefs.current[index] = el)}
-            onPaste={handlePaste}
-            className="w-10 h-10 text-center text-2xl border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        ))}
-      </div>
-    </div>
-  );
+  return {
+    code,
+    inputRefs,
+    handleChange,
+    handleKeyDown,
+    handlePaste,
+    handleRef,
+  };
 };
 
-export default VerifyForm;
+export default useVerifyForm;

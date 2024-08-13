@@ -6,7 +6,7 @@ const Signin: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div className="grid grid-cols-12 h-screen overflow-hidden bg-primary-light">
       <div className="col-span-6">
-        <Image src={qhub} alt="Qhub Logo" className="z-10 absolute top-10 left-10" width={175} height={55}/>
+        <Image src={qhub} alt="Qhub Logo" className="z-10 absolute top-6 left-6" width={175} height={55}/>
         <Image
           src={image}
           alt="image of an organization"

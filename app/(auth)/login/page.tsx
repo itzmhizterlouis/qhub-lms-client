@@ -1,6 +1,6 @@
 import FormHeading from "@/components/ui/Form/FormHeading";
 import React from "react";
-import LoginForm from "./LoginForm";
+import LoginForm from "../../../components/Login/LoginForm";
 import FormFooter from "@/components/ui/Form/FormFooter";
 const Login = () => {
   return (

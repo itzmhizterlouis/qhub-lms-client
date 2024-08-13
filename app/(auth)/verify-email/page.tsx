@@ -1,7 +1,7 @@
 import FormHeading from "@/components/ui/Form/FormHeading";
 
 import React from "react";
-import VerifyForm from "./VerifyForm";
+import VerifyForm from "../../../components/Verify-email/VerifyForm";
 import FormFooter from "@/components/ui/Form/FormFooter";
 
 const page = () => {
