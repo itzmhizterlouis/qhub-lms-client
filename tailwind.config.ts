@@ -15,6 +15,7 @@ const config: Config = {
         primary: {
           DEFAULT: "#2366EB",
           light: "#F0F1FF",
+          gray: "hsla(0, 0%, 100%, 1)",
         },
       },
       backgroundImage: {
