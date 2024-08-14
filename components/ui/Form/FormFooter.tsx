@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-
+import Button from "../Button";
 const FormFooter = ({
   buttonText,
   showExtraText,
@@ -14,9 +14,9 @@ const FormFooter = ({
 }) => {
   return (
     <div className="space-y-4">
-      <button className="w-full rounded-full text-sm open-sans py-3 bg-primary text-white my-4">
-        {buttonText}
-      </button>
+      <div className="my-4 w-full">
+        <Button text={buttonText} />
+      </div>
       {showExtraText && (
         <p className="text-sm text-center">
           {isSignUp ? (

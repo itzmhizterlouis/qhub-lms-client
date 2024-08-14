@@ -1,14 +1,12 @@
-import Main from "@/components/Dashboard/Main";
-import Sidebar from "@/components/Dashboard/Sidebar";
+import DashboardHome from "@/components/Dashboard/DashboardHome";
 import React from "react";
 
-const Dashboard = () => {
+const page = () => {
   return (
-    <div className="grid grid-cols-12">
-      <Sidebar />
-      <Main />
+    <div className="w-full h-full p-6">
+      <DashboardHome />
     </div>
   );
 };
 
-export default Dashboard;
+export default page;

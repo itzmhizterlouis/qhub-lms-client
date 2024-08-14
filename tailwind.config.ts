@@ -15,8 +15,10 @@ const config: Config = {
         primary: {
           DEFAULT: "#2366EB",
           light: "#F0F1FF",
-          gray: "hsla(0, 0%, 100%, 1)",
         },
+        gray: "hsla(0, 0%, 100%, 1)",
+        yellow: "hsla(45, 97%, 50%, 1)",
+        lightBlue: "hsla(220, 83%, 53%, 0.1)",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
