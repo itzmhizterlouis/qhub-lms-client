@@ -5,7 +5,7 @@ const DashboardHome = () => {
   return (
     <div className="p-2 open-sans">
       <h1 className="text-xl font-bold mb-4">Ongoing Courses</h1>
-      <Course />
+      <Course enrolled={true} />
     </div>
   );
 };

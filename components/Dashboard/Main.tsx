@@ -4,7 +4,7 @@ const Main: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
   return (
-    <div className="col-span-10 h-screen">
+    <div className="col-span-10 h-screen ">
       <Header />
       {children}
     </div>
