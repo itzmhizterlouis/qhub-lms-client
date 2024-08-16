@@ -1,4 +1,4 @@
-import DashboardHome from "@/components/Dashboard/DashboardHome";
+import DashboardHome from "@/components/Dashboard/Main/DashboardHome";
 import React from "react";
 
 const page = () => {

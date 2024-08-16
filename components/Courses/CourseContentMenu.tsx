@@ -1,5 +1,5 @@
 import React from "react";
-
+import { motion } from "framer-motion";
 const CourseContentMenu = ({
   active,
   setActive,
@@ -16,17 +16,18 @@ const CourseContentMenu = ({
       name: "curriculum",
       label: "Curriculum",
     },
-    {
-      name: "reviews",
-      label: "Reviews",
-    },
+
     {
       name: "instructor",
       label: "Instructor",
     },
+    {
+      name: "reviews",
+      label: "Reviews",
+    },
   ];
   return (
-    <menu className="flex gap-4 border mt-6 border-transparent border-b-black/20 w-full">
+    <menu className="flex gap-12 border mt-6 border-transparent border-b-black/20 w-full">
       {menuItems.map((item, index) => (
         <div className="flex flex-col" key={index}>
           <p
@@ -38,7 +39,10 @@ const CourseContentMenu = ({
             {item.label}
           </p>
           {active === item.name && (
-            <div className="bg-primary rounded-full w-full h-1 mt-2" />
+            <motion.div
+              layoutId="tab-indicator"
+              className="bg-primary rounded-full w-full h-1 mt-2"
+            />
           )}
         </div>
       ))}

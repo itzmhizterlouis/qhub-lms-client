@@ -17,6 +17,7 @@ const config: Config = {
           light: "#F0F1FF",
         },
         gray: "hsla(0, 0%, 100%, 1)",
+        darkGray: "hsla(0, 0%, 20%, 1)",
         yellow: "hsla(45, 97%, 50%, 1)",
         lightBlue: "hsla(220, 83%, 53%, 0.1)",
       },
