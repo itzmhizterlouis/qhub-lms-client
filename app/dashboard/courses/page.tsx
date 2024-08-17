@@ -1,6 +1,6 @@
 "use client";
-import AllCourses from "@/components/Dashboard/Courses/AllCourses";
-import Menu from "@/components/Dashboard/Courses/Menu";
+import AllCourses from "@/components/Courses/AllCourses";
+import Menu from "@/components/Courses/Menu";
 import React, { useState } from "react";
 
 const Courses = () => {

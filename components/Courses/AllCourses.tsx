@@ -1,6 +1,5 @@
 import React from "react";
-import Course from "../Course";
-
+import Course from "../ui/Course";
 const AllCourses = ({ showEnrolled }: { showEnrolled: boolean }) => {
   return (
     <div className="py-8 grid grid-cols-3 gap-8 ">
