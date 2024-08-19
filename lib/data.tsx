@@ -181,3 +181,66 @@ export const courseinfo = [
     content: "Yes",
   },
 ];
+
+export const tests = [
+  {
+    title: "Customer Test",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",
+    isLocked: false,
+  },
+  {
+    title: "Customer Test",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",
+    isLocked: false,
+  },
+  {
+    title: "Customer Test",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",
+    isLocked: false,
+  },
+  {
+    title: "Customer Test",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",
+    isLocked: true,
+  },
+  {
+    title: "Customer Test",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",
+    isLocked: true,
+  },
+  {
+    title: "Customer Test",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",
+    isLocked: true,
+  },
+  {
+    title: "Customer Test",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",
+    isLocked: true,
+  },
+  {
+    title: "Customer Test",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",
+    isLocked: true,
+  },
+  {
+    title: "Customer Test",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",
+    isLocked: true,
+  },
+  {
+    title: "Customer Test",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",
+    isLocked: true,
+  },
+];
