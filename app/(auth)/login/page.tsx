@@ -1,23 +1,35 @@
+"use client";
 import FormHeading from "@/components/ui/Form/FormHeading";
-import React from "react";
+import React, { useState } from "react";
 import LoginForm from "../../../components/Login/LoginForm";
 import FormFooter from "@/components/ui/Form/FormFooter";
-import { redirect } from "next/navigation";
+
 const Login = () => {
-  const directToDashboard = async () => {
-    "use server";
-    redirect("/dashboard");
+  const [loginInput, setLoginInput] = useState({
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
+  const handleSubmit = async (
+    e:
+      | React.MouseEvent<HTMLButtonElement, MouseEvent>
+      | React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+    if (loginInput.email === "" || loginInput.password === "") {
+      setError("Please fill in all fields");
+      return;
+    }
+    setError("");
+    setLoginInput({ email: "", password: "" });
+    window.location.href = "/dashboard";
   };
   return (
-    <div>
+    <form onSubmit={handleSubmit}>
       <FormHeading title="Welcome Back" />
-      <LoginForm />
-      <FormFooter
-        clickFunction={directToDashboard}
-        buttonText="Log In"
-        showExtraText={true}
-      />
-    </div>
+      <LoginForm loginInput={loginInput} setLoginInput={setLoginInput} />
+      <FormFooter buttonText="Log In" error={error} showExtraText={true} />
+    </form>
   );
 };
 

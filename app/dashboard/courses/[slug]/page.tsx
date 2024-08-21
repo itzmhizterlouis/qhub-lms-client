@@ -12,7 +12,7 @@ const CourseContent = ({
 }) => {
   const slug = params.slug.replace(/-/g, " ");
   return (
-    <div className="overflow-y-auto max-h-[650px]">
+    <div className="h-full">
       <CourseSlug slug={slug} />
 
       <div className="p-7 grid grid-cols-12 gap-10 ">

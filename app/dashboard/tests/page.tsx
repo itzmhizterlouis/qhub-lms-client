@@ -4,10 +4,10 @@ import Image from "next/image";
 import MappedTests from "@/components/Tests/MappedTests";
 const Tests = () => {
   return (
-    <div className="p-6 w-full overflow-auto max-h-[650px]">
+    <div className="p-6 ">
       <h1 className="font-bold text-3xl">Tests</h1>
       <div className="w-full flex justify-end">
-        <div className="relative border border-black/30  rounded-full  mx-8 flex items-center pl-2 gap-1 w-fit border-gray-200 ">
+        <div className="relative border border-black/30  rounded-full  mx-8 flex items-center pl-3 gap-1 w-fit border-gray-200 ">
           <Image
             src={search}
             alt="search"

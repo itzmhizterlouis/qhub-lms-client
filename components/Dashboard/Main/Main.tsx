@@ -4,9 +4,9 @@ const Main: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
   return (
-    <div className="col-span-10 h-screen ">
+    <div className="col-span-10 h-screen grid grid-rows-12">
       <Header />
-      {children}
+      <div className="row-span-10 overflow-auto">{children}</div>
     </div>
   );
 };

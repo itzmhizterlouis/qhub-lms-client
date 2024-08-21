@@ -2,11 +2,22 @@ import Image from "next/image";
 import React from "react";
 import testimage from "@/public/testimage.png";
 import TestDetails from "@/components/Tests/TestDetails";
-const page = () => {
+import TestSlug from "@/components/Tests/TestSlug";
+const page = ({
+  params,
+}: {
+  params: {
+    slug: string;
+  };
+}) => {
+  const slug = params.slug.replace(/-/g, " ");
   return (
-    <div className="overflow-y-auto max-h-[650px] p-6">
-      <Image src={testimage} alt="testimage" />
-      <TestDetails />
+    <div className="">
+      <TestSlug slug={slug} />
+      <div className=" p-6">
+        <Image src={testimage} alt="testimage" />
+        <TestDetails />
+      </div>
     </div>
   );
 };

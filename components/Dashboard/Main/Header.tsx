@@ -6,7 +6,7 @@ import avatar from "@/public/avatar.svg";
 import search from "@/assets/icons/search.svg";
 const Header = () => {
   return (
-    <div className="p-6 h-[105px] shadow-md grid grid-cols-12 w-full">
+    <div className="p-6  shadow-md grid grid-cols-12 w-full row-span-2 items-center ">
       <div className="col-span-9 flex justify-between items-center px-4">
         <Image src={accessbank} alt="logo" priority width={120} height={120} />
         <div className="relative border  mx-8 flex items-center pl-2 gap-1 w-fit border-gray-200 ">

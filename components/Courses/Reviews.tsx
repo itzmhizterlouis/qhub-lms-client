@@ -6,7 +6,7 @@ import CustomerReviews from "./Reviews/CustomerReviews";
 
 const Reviews = () => {
   return (
-    <div className="mt-8 ">
+    <div className="mt-8 flex flex-col items-center">
       <div className="grid grid-cols-12 w-full gap-10">
         <StarCount />
         <CustomerRating />

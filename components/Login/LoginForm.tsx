@@ -3,21 +3,40 @@ import LabelInputContainer from "@/components/ui/Form/LabelInputContainer";
 import { Label } from "@/components/ui/Form/Label";
 import { Input } from "@/components/ui/Form/Input";
 import Password from "@/components/Register/Password";
-const LoginForm = () => {
+const LoginForm = ({
+  loginInput,
+  setLoginInput,
+}: {
+  loginInput: {
+    email: string;
+    password: string;
+  };
+  setLoginInput: (loginInput: { email: string; password: string }) => void;
+}) => {
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLoginInput({ ...loginInput, email: e.target.value });
+  };
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLoginInput({ ...loginInput, password: e.target.value });
+  };
   return (
-    <form className="mt-10">
+    <div className="mt-10">
       <LabelInputContainer className="my-4">
         <Label htmlFor="name">Email Address</Label>
         <Input
           id="email"
           placeholder="linkvault@dax.com"
           type="email"
-          // value={email}
-          // onChange={handleEmailChange}
+          value={loginInput.email}
+          onChange={handleEmailChange}
         />
       </LabelInputContainer>
-      <Password />
-    </form>
+      <Password
+        label="Password"
+        onChange={handlePasswordChange}
+        value={loginInput.password}
+      />
+    </div>
   );
 };
 
