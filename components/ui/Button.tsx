@@ -1,11 +1,13 @@
-"use client"
+"use client";
 import React from "react";
 const Button = ({
   text,
   clickFunction,
+  type = "button",
 }: {
   text: string;
   clickFunction?: () => void;
+  type?: "submit" | "button";
 }) => {
   return (
     <button
@@ -15,6 +17,7 @@ const Button = ({
           clickFunction();
         }
       }}
+      type={type}
     >
       {text}
     </button>

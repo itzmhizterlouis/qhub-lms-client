@@ -13,7 +13,7 @@ const SecondGrid = () => {
           <CiPlay1 />
         </div>
       </div>
-      <div className="px-7 pb-5">
+      <div className="px-4 pb-5">
         <ul className="mb-5">
           {courseinfo.map((info, index) => (
             <li

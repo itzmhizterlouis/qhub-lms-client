@@ -12,10 +12,10 @@ const Course = ({ enrolled }: { enrolled: boolean }) => {
     >
       <div className="px-3 w-full mb-4">
         <Image src={image} alt="course image" />
-        <h1 className="font-bold text-xl my-2">Introduction to Data Science</h1>
+        <h1 className="font-bold  my-2">Introduction to Data Science</h1>
         {enrolled ? (
           <div>
-            <p className="text-sm my-1">3 modules | 20 videos</p>
+            <p className="text-xs my-1">3 modules | 20 videos</p>
 
             <div className="flex gap-2 my-1 items-center">
               <div className="w-[60%]">

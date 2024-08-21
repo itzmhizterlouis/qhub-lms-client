@@ -9,7 +9,7 @@ import email from "@/assets/icons/email.svg";
 const OtherTestInfo = () => {
   const icons = [instagram, x, facebook, linkedin, email];
   return (
-    <div className="col-span-5 border border-gray-500/20 p-6 rounded-xl">
+    <div className="col-span-5 border text-sm border-gray-500/20 p-6 rounded-xl">
       <div className="bg-primary/30 rounded-xl p-4 flex gap-2 items-center">
         <Image src={shout} alt="shout" />
         <p>

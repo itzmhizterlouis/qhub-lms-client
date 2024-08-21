@@ -14,13 +14,13 @@ const Instructor = () => {
         />
       </div>
       <div className="col-span-9">
-        <h1 className="text-2xl font-bold">
+        <h1 className="text-xl font-bold">
           Matthew Taylor{" "}
           <span className="text-slate-500/50 font-normal">
             / Accounting Teacher
           </span>
         </h1>
-        <p className="mt-6">
+        <p className="mt-6 text-sm">
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptates
           doloribus ad aspernatur quidem cupiditate eveniet odio nemo ipsam,
           repellat esse error repellendus laboriosam aliquid minima mollitia,

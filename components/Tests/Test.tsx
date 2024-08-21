@@ -12,7 +12,7 @@ const Test = () => {
           <ProgressBar value={0} max={100} />
           <IoMdTrophy className="text-3xl text-yellow" />
         </div>
-        <p className="text-sm">0 of 50 answered</p>
+        <p className="text-xs">0 of 50 answered</p>
       </div>
     </div>
   );

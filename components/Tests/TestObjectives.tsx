@@ -12,31 +12,31 @@ const TestObjectives = () => {
   return (
     <div className="col-span-7 border border-gray-500/20 rounded-xl ">
       <div className="p-6 border-b-gray/20 border-b">
-        <h1 className="text-xl font-bold">Customer Service Excellence</h1>
-        <h3 className="flex gap-2 items-center my-2 mt-4">
+        <h1 className="text-xl font-bold ">Customer Service Excellence</h1>
+        <h3 className="flex gap-2 items-center my-2 mt-4 text-sm">
           <span className="font-bold">Prerequisite Course: </span>
           Fundamentals of Customer Service in Banking
-          <span className="bg-green-500 text-white rounded-full w-4 h-4 text-xs flex items-center justify-center">
+          <span className="bg-green-500 text-white rounded-full w-4 h-4 text-[10px] flex items-center justify-center">
             <FaCheck />
           </span>
         </h3>
-        <h3 className="">
+        <h3 className=" text-sm">
           {" "}
           <span className="font-bold">Question Type:</span> Multiple Choice
         </h3>
-        <h3 className="my-2">
+        <h3 className="my-2 text-sm">
           {" "}
-          <span className="font-bold">Number of Questions:</span>50
+          <span className="font-bold">Number of Questions:</span> 50
         </h3>
       </div>
       <div className="p-6">
-        <h1 className="font-bold">Objectives</h1>
+        <h3 className="font-bold text-sm">Objectives</h3>
         <p className="text-sm  mt-3 text-gray-500">
           Evaluate the employee&apos;s understanding of customer service
           principles and their ability to apply them in a banking context.
         </p>
-        <h1 className="font-bold mt-4">Requirements</h1>
-        <ul className="list-disc list-inside mt-4">
+        <h3 className="font-bold mt-4 text-sm">Requirements</h3>
+        <ul className="list-disc list-inside mt-4 text-sm">
           <li>
             You should be currently taking or have completed this course to be
             able to understand and answer the questions correctly.

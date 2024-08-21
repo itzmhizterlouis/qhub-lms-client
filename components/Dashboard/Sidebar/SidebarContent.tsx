@@ -19,11 +19,11 @@ const SidebarContent = () => {
       {sidebar.map((item, index) => (
         <Link href={item.link} className="w-full " key={index}>
           <li
-            className={`flex items-center px-10 gap-4 font-semibold py-3 my-2 border-4 border-transparent ${
+            className={`flex items-center px-10 gap-4 font-semibold text-base py-3 my-2 border-4 border-transparent ${
               getActive(item) === path ? "bg-lightBlue border-l-primary " : ""
             }`}
           >
-            <Image src={item.icon} alt={item.name} width={25} height={25} />
+            <Image src={item.icon} alt={item.name} width={20} height={20} />
             {item.name}
           </li>
         </Link>
