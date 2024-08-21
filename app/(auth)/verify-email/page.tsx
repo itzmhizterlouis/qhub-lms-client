@@ -3,8 +3,12 @@ import FormHeading from "@/components/ui/Form/FormHeading";
 import React from "react";
 import VerifyForm from "../../../components/Verify-email/VerifyForm";
 import FormFooter from "@/components/ui/Form/FormFooter";
-
+import { redirect } from "next/navigation";
 const page = () => {
+const directToDashboard = async() => {
+  "use server";
+  redirect("/dashboard");
+}
   return (
     <div>
       <FormHeading title="Verify Your Email" />
@@ -13,7 +17,7 @@ const page = () => {
         box below
       </p>
       <VerifyForm />
-      <FormFooter showExtraText={false} buttonText="Verify Email" />
+      <FormFooter clickFunction={directToDashboard} showExtraText={false} buttonText="Verify Email" />
     </div>
   );
 };

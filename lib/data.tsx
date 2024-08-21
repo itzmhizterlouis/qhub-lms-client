@@ -184,7 +184,7 @@ export const courseinfo = [
 
 export const tests = [
   {
-    title: "Customer Test",
+    title: "Customer Service Excellence Test",
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",
     isLocked: false,
