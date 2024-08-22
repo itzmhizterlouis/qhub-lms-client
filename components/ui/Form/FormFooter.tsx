@@ -13,7 +13,7 @@ const FormFooter = ({
   showExtraText: boolean;
   isSignUp?: boolean;
 
-  error: string;
+  error: string | null;
 }) => {
   return (
     <div className="space-y-4">

@@ -2,8 +2,7 @@
 import FormHeading from "@/components/ui/Form/FormHeading";
 import React from "react";
 import VerifyForm from "../../../components/Verify-email/VerifyForm";
-import FormFooter from "@/components/ui/Form/FormFooter";
-import useVerifyForm from "@/hooks/useVerifyForm";
+
 const VerifyEmail = () => {
  
   return (

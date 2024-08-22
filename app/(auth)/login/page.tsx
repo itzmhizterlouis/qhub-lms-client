@@ -1,33 +1,38 @@
 "use client";
+import React, { useRef, useState } from "react";
+import { useRouter } from "next/navigation"; // Assuming you're using Next.js 13+
 import FormHeading from "@/components/ui/Form/FormHeading";
-import React, { useState } from "react";
 import LoginForm from "../../../components/Login/LoginForm";
 import FormFooter from "@/components/ui/Form/FormFooter";
 
 const Login = () => {
-  const [loginInput, setLoginInput] = useState({
-    email: "",
-    password: "",
-  });
-  const [error, setError] = useState("");
-  const handleSubmit = async (
-    e:
-      | React.MouseEvent<HTMLButtonElement, MouseEvent>
-      | React.FormEvent<HTMLFormElement>
-  ) => {
+  const [error, setError] = useState<string | null>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
+
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (loginInput.email === "" || loginInput.password === "") {
-      setError("Please fill in all fields");
+    const email = emailRef.current?.value;
+    const password = passwordRef.current?.value;
+
+    if (!email || !password) {
+      setError("Please enter both email and password.");
       return;
     }
-    setError("");
-    setLoginInput({ email: "", password: "" });
-    window.location.href = "/dashboard";
+
+    // Reset error if both fields are filled
+    setError(null);
+
+  
+    // If login is successful:
+    router.push("/dashboard");
   };
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleLogin}>
       <FormHeading title="Welcome Back" />
-      <LoginForm loginInput={loginInput} setLoginInput={setLoginInput} />
+      <LoginForm emailRef={emailRef} passwordRef={passwordRef} />
       <FormFooter buttonText="Log In" error={error} showExtraText={true} />
     </form>
   );
