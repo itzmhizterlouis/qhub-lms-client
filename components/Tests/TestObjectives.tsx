@@ -3,12 +3,20 @@ import React from "react";
 import { FaArrowRight, FaCheck } from "react-icons/fa";
 import { useSearchParams } from "next/navigation";
 import { IoIosLock } from "react-icons/io";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 const TestObjectives = () => {
   const pathname = usePathname();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const isLocked = searchParams.get("locked");
+  const handleStartTest = () => {
+    if (isLocked) {
+      alert("This test is locked");
+      return;
+    }
+    router.push(pathname + "/start-test");
+  };
   return (
     <div className="col-span-7 border border-gray-500/20 rounded-xl ">
       <div className="p-6 border-b-gray/20 border-b">
@@ -46,12 +54,12 @@ const TestObjectives = () => {
             able to understand and answer the questions correctly.
           </li>
         </ul>
-        <Link
-          href={pathname + "/start-test"}
+        <button
+          onClick={handleStartTest}
           className="flex items-center w-[250px] bg-primary rounded-full text-white p-3 mt-6 px-5 justify-between "
         >
           Start Test {isLocked ? <IoIosLock /> : <FaArrowRight />}
-        </Link>
+        </button>
       </div>
     </div>
   );

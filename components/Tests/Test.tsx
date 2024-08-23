@@ -1,19 +1,24 @@
-import React from "react";
-import ProgressBar from "../ui/ProgressBar";
-import { IoMdTrophy } from "react-icons/io";
+"use client";
+import React, { useState, useCallback } from "react";
+import TestHeader from "./TestHeader";
+import TestBody from "./TestBody";
+import { QUESTIONS } from "@/lib/data";
+import TestSummary from "./TestSummary";
 const Test = () => {
+  const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
+  const [showSummary, setShowSummary] = useState(false);
   return (
-    <div className="w-full h-full border ">
-      <div className="bg-primary text-white w-full p-6 ">
-        <h1 className=" text-2xl mb-2 font-semibold">
-          Customer Service Excellence
-        </h1>
-        <div className="w-[300px] my-2 flex gap-2 items-center">
-          <ProgressBar value={0} max={100} />
-          <IoMdTrophy className="text-3xl text-yellow" />
-        </div>
-        <p className="text-xs">0 of 50 answered</p>
-      </div>
+    <div className="w-full h-full border grid grid-rows-12">
+      <TestHeader questionIndex={activeQuestionIndex} />
+      {showSummary ? (
+        <TestSummary  setShowSummary={setShowSummary}  setQuestionIndex={setActiveQuestionIndex}/>
+      ) : (
+        <TestBody
+          questionIndex={activeQuestionIndex}
+          setQuestionIndex={setActiveQuestionIndex}
+          setShowSummary={setShowSummary}
+        />
+      )}
     </div>
   );
 };
