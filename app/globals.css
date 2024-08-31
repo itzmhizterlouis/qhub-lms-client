@@ -15,7 +15,9 @@
   font-optical-sizing: auto;
   font-variation-settings: "wdth" 100;
 }
-
+.select-none{
+  -webkit-user-select: none;
+}
 
 .stdropdown-container {
   height: 40px;

@@ -20,6 +20,7 @@ const config: Config = {
         darkGray: "hsla(0, 0%, 20%, 1)",
         yellow: "hsla(45, 97%, 50%, 1)",
         lightBlue: "hsla(220, 83%, 53%, 0.1)",
+        glassmorphism: "rgba(255, 255, 255, 0.60)",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

@@ -36,6 +36,7 @@ const VerifyForm: React.FC = () => {
             onKeyDown={(e) => handleKeyDown(e, index)}
             ref={(el) => handleRef(el, index)}
             onPaste={handlePaste}
+            autoComplete="none"
             className="w-10 h-10 text-center text-2xl border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         ))}

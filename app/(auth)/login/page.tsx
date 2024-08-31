@@ -30,7 +30,7 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={handleLogin}>
+    <form onSubmit={handleLogin} className="w-full">
       <FormHeading title="Welcome Back" />
       <LoginForm emailRef={emailRef} passwordRef={passwordRef} />
       <FormFooter buttonText="Log In" error={error} showExtraText={true} />

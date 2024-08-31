@@ -8,7 +8,6 @@ import { usePathname } from "next/navigation";
 const SidebarContent = () => {
   const pathname = usePathname();
   const path = pathname.split("/")[2];
- 
 
   const getActive = ({ link }: { link: string }) => {
     return link.split("/")[2];
@@ -24,7 +23,7 @@ const SidebarContent = () => {
             }`}
           >
             <Image src={item.icon} alt={item.name} width={20} height={20} />
-            {item.name}
+            <span className="max-lg:hidden">{item.name}</span>
           </li>
         </Link>
       ))}

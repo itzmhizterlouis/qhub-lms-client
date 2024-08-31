@@ -40,7 +40,7 @@ const Register = () => {
   };
 
   return (
-    <form className="w-[450px]" onSubmit={handleRegister}>
+    <form className="w-full" onSubmit={handleRegister}>
       <FormHeading title="Register an Organization" />
       <RegisterForm
         nameRef={nameRef}

@@ -9,12 +9,12 @@ const Verified = () => {
   };
   return (
     <div className="flex items-center flex-col">
-      <div className="bg-primary p-6 w-fit rounded-full">
-        <FaCheck className="text-6xl text-white" />
+      <div className="bg-primary p-3 md:p-6 w-fit rounded-full">
+        <FaCheck className="text-3xl md:text-6xl text-white" />
       </div>
       <h1 className="text-2xl font-semibold mt-4">Email Verified</h1>
-      <p className="max-w-xs my-4 text-center">
-        Your email has been verified. Let&apos;s setup your account.
+      <p className="max-w-[280px] mx-auto sm:max-w-xs my-4 text-center max-sm:text-sm">
+        Your email has been verified. Let&apos;s get your account set up.
       </p>
       <Button text="Get Started" clickFunction={handleStart } />
     </div>

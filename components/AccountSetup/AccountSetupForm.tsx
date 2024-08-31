@@ -24,7 +24,7 @@ const AccountSetupForm = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserInputs({ ...userInputs, [e.target.id]: e.target.value });
-    console.log(userInputs, "heje");
+    
   };
   const handlePrevious = () => {
     setShowSecondSetup(false);

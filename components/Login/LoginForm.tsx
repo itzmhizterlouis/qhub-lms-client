@@ -19,6 +19,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ emailRef, passwordRef }) => {
           placeholder="linkvault@dax.com"
           type="email"
           ref={emailRef}
+          autoComplete="email"
         />
       </LabelInputContainer>
       <Password

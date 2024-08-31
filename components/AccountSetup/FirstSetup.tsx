@@ -96,7 +96,7 @@ const FirstSetup = ({
       {error && <p className="text-red-500 text-sm">{error}</p>}
       <div className="flex justify-end">
         <button
-          className="flex items-center gap-2 bg-primary rounded-md text-white p-2 px-6 mt-4"
+          className="flex items-center gap-2 bg-primary rounded-md text-white p-2 px-4 md:px-6 mt-4 max-md:text-sm"
           type="button"
           onClick={handleNext}
         >

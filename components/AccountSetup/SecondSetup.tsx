@@ -106,7 +106,7 @@ const SecondSetup = ({
         >
           <FaArrowLeft /> Go back
         </button>
-        <button className="flex items-center gap-2 bg-primary rounded-md text-white p-2 px-6 mt-4">
+        <button className="flex items-center gap-2 bg-primary rounded-md text-white  px-4 md:px-6 max-md:text-sm p-2 mt-4">
           Submit <FaArrowRight />
         </button>
       </div>

@@ -21,7 +21,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
   confirmPasswordRef,
 }) => {
   return (
-    <div className="mt-10 ">
+    <div className="mt-4 2xl:mt-10 ">
       <LabelInputContainer className="my-4">
         <Label htmlFor="name">Organization Name</Label>
         <Input id="name" placeholder="Dax Inc" type="text" ref={nameRef} />

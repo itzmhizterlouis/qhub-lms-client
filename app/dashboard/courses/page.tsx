@@ -8,6 +8,7 @@ const Courses = () => {
   return (
     <div className="p-6 h-full">
       <Menu showEnrolled={showEnrolled} setShowEnrolled={setShowEnrolled} />
+
       <AllCourses showEnrolled={showEnrolled} />
     </div>
   );
