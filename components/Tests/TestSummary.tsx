@@ -14,10 +14,10 @@ const TestSummary = ({
     setQuestionIndex(0);
   };
   return (
-    <div className="flex flex-col items-center h-full row-span-9 p-6">
-      <h1 className="text-green-500 text-5xl">85%</h1>
+    <div className="flex flex-col items-center h-full row-span-9 p-4 lg:p-6 w-full">
+      <h1 className="text-green-500 text-3xl lg:text-5xl">85%</h1>
       <p className="my-3">You are Excellent, DAX</p>
-      <div className="rounded-xl border w-[400px] p-3">
+      <div className="rounded-xl border w-full lg:w-[40%] p-4">
         <p className="w-full flex justify-between items-center my-2">
           {" "}
           Total Questions <span>5</span>

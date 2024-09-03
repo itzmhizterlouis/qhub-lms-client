@@ -6,8 +6,8 @@ import CustomerReviews from "./Reviews/CustomerReviews";
 
 const Reviews = () => {
   return (
-    <div className="mt-8 flex flex-col items-center">
-      <div className="grid grid-cols-12 w-full gap-10">
+    <div className="xl:mt-8 flex flex-col items-center">
+      <div className="lg:grid lg:grid-cols-12 w-full lg:gap-10 flex items-center justify-center flex-col">
         <StarCount />
         <CustomerRating />
       </div>

@@ -8,8 +8,8 @@ import React from "react";
 
 const FormBody = () => {
   return (
-    <form action="" className="mt-10">
-      <div className="flex gap-6">
+    <form action="" className="mt-6 md:mt-10">
+      <div className="flex gap-3 md:gap-6">
         <LabelInputContainer>
           <Label htmlFor="name" className="text-xs">Name *</Label>
           <Input type="text" id="name" />
@@ -20,8 +20,8 @@ const FormBody = () => {
         </LabelInputContainer>
       </div>
 
-      <h3 className="text-xl text-center m-4 font-semibold">Your rating</h3>
-      <Star starCount={5} className="text-2xl mb-4" />
+      <h3 className="md:text-xl text-center m-3 md:m-4 font-semibold">Your rating</h3>
+      <Star starCount={5} className="text-xl md:text-2xl mb-4" />
       <LabelInputContainer>
         <Label htmlFor="review" className="text-xs">Review *</Label>
 

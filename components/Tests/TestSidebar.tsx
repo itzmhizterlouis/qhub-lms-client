@@ -7,21 +7,25 @@ const TestSidebar = ({
   setQuestionIndex,
 }: {
   questionIndex: number;
-  setQuestionIndex;
+  setQuestionIndex: React.Dispatch<React.SetStateAction<number>>;
 }) => {
+  const handleClick = (index: number) => {
+    setQuestionIndex(index);
+  };
   return (
-    <div className="col-span-2 border-r ">
-      <h3 className="font-bold">Questions</h3>
-      <ul className="mt-2">
+    <div className="col-span-2 border-r py-8 max-lg:hidden">
+      <h3 className="font-bold px-8">Questions</h3>
+      <ul className="mt-2 ">
         {QUESTIONS.map((question, index) => {
           return (
             <li
               key={index}
-              className={`flex items-center gap-2 mr-4 px-2 text-sm py-3  ${
+              className={`flex items-center cursor-pointer gap-2 w-full px-3 text-sm py-3  ${
                 index === questionIndex
                   ? "text-primary  bg-primary/10"
                   : "text-black"
               }`}
+              onClick={() => handleClick(index)}
             >
               <Image src={ellipse} alt="ellipse" />
               {question.title}

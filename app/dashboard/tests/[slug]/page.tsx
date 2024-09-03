@@ -12,9 +12,9 @@ const page = ({
 }) => {
   const slug = params.slug.replace(/-/g, " ");
   return (
-    <div className="">
+    <div className="h-full ">
       <TestSlug slug={slug} />
-      <div className=" p-6">
+      <div className=" p-4 lg:p-6">
         <Image src={testimage} alt="testimage" />
         <TestDetails />
       </div>

@@ -19,14 +19,14 @@ const TestObjectives = () => {
   };
   return (
     <div className="col-span-7 border border-gray-500/20 rounded-xl ">
-      <div className="p-6 border-b-gray/20 border-b">
-        <h1 className="text-xl font-bold ">Customer Service Excellence</h1>
+      <div className="p-4 md:p-6 border-b-gray/20 border-b">
+        <h1 className="sm:text-xl font-bold ">Customer Service Excellence</h1>
         <h3 className="flex gap-2 items-center my-2 mt-4 text-sm">
           <span className="font-bold">Prerequisite Course: </span>
           Fundamentals of Customer Service in Banking
-          <span className="bg-green-500 text-white rounded-full w-4 h-4 text-[10px] flex items-center justify-center">
+          {/* <span className="bg-green-500 text-white rounded-full w-4 h-4 text-[10px] flex items-center justify-center">
             <FaCheck />
-          </span>
+          </span> */}
         </h3>
         <h3 className=" text-sm">
           {" "}

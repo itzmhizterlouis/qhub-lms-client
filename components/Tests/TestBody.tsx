@@ -5,16 +5,20 @@ import TestContent from "./TestContent";
 const TestBody = ({
   questionIndex,
   setQuestionIndex,
-  setShowSummary
+  setShowSummary,
 }: {
   questionIndex: number;
-  setQuestionIndex:React.Dispatch<React.SetStateAction<number>>;
+  setQuestionIndex: React.Dispatch<React.SetStateAction<number>>;
   setShowSummary: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   return (
-    <div className="grid grid-cols-12 p-8 row-span-9">
+    <div className="grid grid-cols-12 h-fit">
       <TestSidebar questionIndex={questionIndex} setQuestionIndex={setQuestionIndex}/>
-      <TestContent questionIndex={questionIndex} setQuestionIndex={setQuestionIndex} setShowSummary={setShowSummary} />
+      <TestContent
+        questionIndex={questionIndex}
+        setQuestionIndex={setQuestionIndex}
+        setShowSummary={setShowSummary}
+      />
     </div>
   );
 };

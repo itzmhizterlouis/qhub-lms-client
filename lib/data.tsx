@@ -32,7 +32,7 @@ export const sidebar = [
     link: "/dashboard/reports",
   },
   {
-    name: "My Profile",
+    name: "Profile",
     icon: profile,
     link: "/dashboard/profile",
   },

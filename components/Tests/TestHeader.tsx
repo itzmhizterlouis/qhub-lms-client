@@ -4,11 +4,11 @@ import { IoMdTrophy } from "react-icons/io";
 
 const TestHeader = ({ questionIndex }: { questionIndex: number }) => {
   return (
-    <div className="bg-primary text-white w-full p-6 row-span-3 ">
+    <div className="bg-primary text-white w-full p-4 h-fit place-content-center">
       <h1 className=" text-2xl mb-2 font-semibold">
         Customer Service Excellence
       </h1>
-      <div className="w-[300px] my-2 flex gap-2 items-center">
+      <div className=" my-2 flex gap-2 items-center">
         <ProgressBar value={questionIndex + 1} max={5} />
         <IoMdTrophy className="text-3xl text-yellow" />
       </div>

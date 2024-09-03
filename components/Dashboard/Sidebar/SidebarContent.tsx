@@ -18,12 +18,12 @@ const SidebarContent = () => {
       {sidebar.map((item, index) => (
         <Link href={item.link} className="w-full " key={index}>
           <li
-            className={`flex items-center px-10 gap-4 font-semibold text-base py-3 my-2 border-4 border-transparent ${
+            className={`flex items-center max-lg:justify-center px-4 xl:px-10 gap-4 font-semibold text-base py-3 my-2 border-4 border-transparent ${
               getActive(item) === path ? "bg-lightBlue border-l-primary " : ""
             }`}
           >
             <Image src={item.icon} alt={item.name} width={20} height={20} />
-            <span className="max-lg:hidden">{item.name}</span>
+            <span className="max-lg:hidden visible">{item.name}</span>
           </li>
         </Link>
       ))}

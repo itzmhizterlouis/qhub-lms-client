@@ -8,7 +8,7 @@ const MappedTests = () => {
     return title.replace(/\s+/g, "-").toLowerCase();
   };
   return (
-    <div className="overflow-y-auto grid grid-cols-2 md:grid-cols-3 gap-4 mt-6 overflow-auto max-lg:h-[80vh] h-[70vh]">
+    <div className="overflow-y-auto grid grid-cols-2 md:grid-cols-3 gap-4 mt-6 ">
       {tests.map((test, index) => (
         <div
           key={index}
