@@ -15,7 +15,7 @@ const CourseContent = ({
     <div className="h-full  scrollbar">
       <CourseSlug slug={slug} />
 
-      <div className="lg:p-7 p-4 grid grid-cols-12 lg:gap-10 ">
+      <div className="lg:p-7 p-4 grid grid-cols-12 lg:gap-4 xl:gap-6 ">
         <FirstGrid />
         <SecondGrid />
       </div>

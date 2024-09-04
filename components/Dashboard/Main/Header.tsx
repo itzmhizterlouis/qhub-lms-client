@@ -29,7 +29,7 @@ const Header = () => {
 
         <div className="flex gap-4">
           <Image src={avatar} alt="avatar" className="md:w-14 w-10 h-10 md:h-14 " />
-          <div className="flex justify-center flex-col max-lg:hidden">
+          <div className="flex justify-center flex-col max-xl:hidden">
             <p className="mb-1 font-bold">John Doe</p>
             <p className="text-sm text-gray-600">Employee</p>
           </div>

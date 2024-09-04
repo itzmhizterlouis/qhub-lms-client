@@ -49,7 +49,7 @@ const Main: React.FC<{
       <div
         className={`${
           isOpen ? "md:w-[80%]" : "w-full"
-        } flex flex-col transition-all duration-500 max-h-screen overflow-auto`}
+        } flex flex-col w-full transition-all duration-500 max-h-screen overflow-auto`}
       >
         <div className={`${isOpen ? "block" : " hidden"} `}>
           <Header />
