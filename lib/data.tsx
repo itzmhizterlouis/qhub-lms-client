@@ -292,13 +292,56 @@ export const QUESTIONS = [
   },
   {
     title: "Question 5",
-    heading:
-      "Whatr's complaint according to typical bank policies?",
+    heading: "Whatr's complaint according to typical bank policies?",
     options: [
       "Listen to the customer’s complaint, acknowledge the issue, investigate the problem, provide a solution, and follow up to ensure satisfaction.",
       "Immediately escalate the complaint to the bank manager without acknowledging the customer’s issue or investigating the problem.",
       "Apologize to the customer, provide a temporary solution, and wait for the customer to contact the bank again if the issue persists.  ",
       "Offer the customer a refund or compensation right away without further investigation or follow-up.",
     ],
+  },
+];
+import resource1 from "@/public/resource1.png";
+import resource2 from "@/public/resource2.png";
+import resource3 from "@/public/resource3.png";
+import resource4 from "@/public/resource4.png";
+import resource5 from "@/public/resource5.png";
+import resource6 from "@/public/resource6.png";
+import resource7 from "@/public/resource7.png";
+export const resources = [
+  {
+    name: "Resource 1",
+    image: resource1,
+    type: "PDF",
+  },
+  {
+    name: "Resource 2",
+    image: resource2,
+    type: "PDF",
+  },
+  {
+    name: "Resource 3",
+    image: resource3,
+    type: "Excel",
+  },
+  {
+    name: "Resource 4",
+    image: resource4,
+    type: "PDF",
+  },
+  {
+    name: "Resource 5",
+    image: resource5,
+    type: "Checklist",
+  },
+  {
+    name: "Resource 6",
+    image: resource6,
+    type: "PDF",
+  },
+  {
+    name: "Resource 7",
+    image: resource7,
+    type: "Excel",
   },
 ];
