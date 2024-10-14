@@ -8,3 +8,10 @@ export interface UserInputs {
   zipCode: string;
   website: string;
 }
+export type Employee = {
+  id: string;
+  name: string;
+  role: string;
+  status: string;
+};
+

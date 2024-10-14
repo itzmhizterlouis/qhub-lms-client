@@ -1,13 +1,13 @@
 import React from "react";
 import Course from "@/components/ui/Course";
 
-const DashboardHome = () => {
+const EmployeeHome = () => {
   return (
-    <div className="p-2 open-sans">
+    <div className="open-sans">
       <h1 className="text-xl max-md:text-lg font-bold mb-4">Ongoing Courses</h1>
       <Course enrolled={true} />
     </div>
   );
 };
 
-export default DashboardHome;
+export default EmployeeHome;
