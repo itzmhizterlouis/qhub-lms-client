@@ -58,9 +58,21 @@ const EmployeeTable = () => {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Name
+            Name & Email
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
+        );
+      },
+      cell: ({ row }) => {
+        const email = row.original.email;
+        const name = row.original.name;
+        return (
+          <div className="">
+            <div className="text-lg font-semibold">{name}</div>
+            <div className="text-gray-600 lowercase font-plus text-sm">
+              {email}
+            </div>
+          </div>
         );
       },
     },
@@ -74,9 +86,9 @@ const EmployeeTable = () => {
       cell: ({ row }) => {
         const status = row.original.status;
         return status === "active" ? (
-          <IconCircleCheckFilled className="text-green-500" />
+          <IconCircleCheckFilled className="text-green-500 cursor-pointer" />
         ) : (
-          <IconCircleCheckFilled className="text-gray-500" />
+          <IconCircleCheckFilled className="text-gray-300 cursor-pointer" />
         );
       },
     },
@@ -103,6 +115,13 @@ const EmployeeTable = () => {
               </TooltipProvider>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem>Change role</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => alert("Delete user")} className="hover:!text-red-500">
+                  Deactivate
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => alert("Delete user")} className="hover:!text-red-500">
+                  Delete
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 
