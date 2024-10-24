@@ -15,3 +15,16 @@ export type Employee = {
   status: string;
   email: string;
 };
+export interface Lesson {
+  name: string;
+  content: string;
+  featuredImage: string;
+  video: string;
+  exerciseFiles: string[];
+}
+export interface Module {
+  id: string;
+  name: string;
+  summary?: string;
+  moduleItems?: Lesson[];
+}
