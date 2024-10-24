@@ -4,7 +4,15 @@ import test from "@/assets/icons/test.svg";
 import file from "@/assets/icons/file.svg";
 import chart from "@/assets/icons/chart.svg";
 import profile from "@/assets/icons/profile.svg";
-import { IconBriefcase2, IconLayout2, IconPuzzle } from "@tabler/icons-react";
+import {
+  IconBook,
+  IconBriefcase2,
+  IconChartPie,
+  IconChecks,
+  IconLayout2,
+  IconPuzzle,
+  IconUsers,
+} from "@tabler/icons-react";
 import { GoMortarBoard } from "react-icons/go";
 export const sidebar = {
   employee: [
@@ -59,6 +67,11 @@ export const sidebar = {
       name: "Tests",
       icon: <IconPuzzle />,
       link: "/dashboard/tests",
+    },
+    {
+      name: "Reports",
+      icon: <IconChartPie />,
+      link: "/dashboard/reports",
     },
   ],
 };
@@ -456,32 +469,103 @@ export const resources = [
     type: "Excel",
   },
 ];
-import doublecheck from "@/assets/icons/double-check.svg";
-import education from "@/assets/icons/education.svg";
-import clock from "@/assets/icons/clock1.svg";
+
+// export const homepageStats = [
+//   {
+//     sub: "Month active employees",
+//     value: "50+",
+//     percent: "+10%",
+//     icon: education,
+//   },
+//   {
+//     sub: "Month completed courses",
+//     value: "30",
+//     percent: "+15%",
+//     icon: doublecheck,
+//   },
+//   {
+//     sub: "Average assessment score",
+//     value: "70%",
+//     percent: "-3%",
+//     icon: education,
+//   },
+//   {
+//     sub: "Month learning time",
+//     value: "24hrs",
+//     percent: "+5%",
+//     icon: clock,
+//   },
+// ];
 export const homepageStats = [
   {
-    sub: "Month active employees",
-    value: "50+",
-    percent: "+10%",
-    icon: education,
-  },
-  {
-    sub: "Month completed courses",
+    sub: "Number of Courses",
     value: "30",
-    percent: "+15%",
-    icon: doublecheck,
+    icon: <IconBook className="text-primary w-5 h-5" />,
   },
   {
-    sub: "Average assessment score",
-    value: "70%",
-    percent: "-3%",
-    icon: education,
+    sub: "Number of Employees",
+    value: "500",
+
+    icon: <IconUsers className="text-primary w-5 h-5" />,
   },
   {
-    sub: "Month learning time",
-    value: "24hrs",
-    percent: "+5%",
-    icon: clock,
+    sub: "Number of Completed Courses",
+    value: "500",
+    icon: <IconChecks className="text-primary w-5 h-5" />,
+  },
+];
+export const topratedCourses = [
+  {
+    course: "Introduction to JavaScript",
+    ratings: 5.0,
+  },
+  {
+    course: "Introduction to JavaScript",
+    ratings: 4.5,
+  },
+  {
+    course: "Introduction to JavaScript",
+    ratings: 4.2,
+  },
+  {
+    course: "JavaScript for Beginners",
+    ratings: 3.8,
+  },
+  {
+    course: "Learn JavaScript",
+    ratings: 3.5,
+  },
+];
+import avatar from "@/public/avatar.svg";
+export const mostActiveEmployees = [
+  {
+    name: "John Doe",
+    email: "taiwo@gmail.com",
+    picture: avatar,
+    coursesTaken: 5,
+  },
+  {
+    name: "Jane Doe",
+    email: "taiwo@gmail.com",
+    picture: avatar,
+    coursesTaken: 4,
+  },
+  {
+    name: "John Doe",
+    email: "taiwo@gmail.com",
+    picture: avatar,
+    coursesTaken: 3,
+  },
+  {
+    name: "Jane Doe",
+    email: "taiwo@gmail.com",
+    picture: "",
+    coursesTaken: 2,
+  },
+  {
+    name: "John Doe",
+    email: "taiwo@gmail.com",
+    picture: "",
+    coursesTaken: 1,
   },
 ];
