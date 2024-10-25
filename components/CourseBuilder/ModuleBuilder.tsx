@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { IconCirclePlus, IconInfoCircle } from "@tabler/icons-react";
 import {
   Dialog,
@@ -22,7 +22,11 @@ const ModuleBuilder = () => {
   const [modules, setModules] = useState<Module[]>([]);
   const [moduleName, setModuleName] = useState("");
   const [moduleSummary, setModuleSummary] = useState("");
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     const { id, value } = e.target;
     if (id === "moduleName") {
       setModuleName(value);
@@ -65,8 +69,12 @@ const ModuleBuilder = () => {
           </DialogHeader>
           <div className="grid gap-4">
             <Label htmlFor="moduleName">Module Name</Label>
-            <Input id="moduleName" className="col-span-3" />
-            <p className="mt-1 flex items-center gap-2 text-gray-500 text-sm">
+            <Input
+              id="moduleName"
+              className="col-span-3"
+              onChange={handleChange}
+            />
+            <p className=" flex items-center gap-2 text-gray-500 text-sm">
               <IconInfoCircle className="w-5 h-5" />
               Module titles are displayed publicly wherever required. Each
               module may contain one or more lessons, quiz and tasks.
@@ -78,8 +86,9 @@ const ModuleBuilder = () => {
               placeholder="Type summary here."
               id="moduleSummary"
               rows={4}
+              onChange={handleChange}
             />
-            <p className="mt-1 flex items-center gap-2 text-gray-500 text-sm">
+            <p className=" flex items-center gap-2 text-gray-500 text-sm">
               <IconInfoCircle className="w-5 h-5" />
               Add a summary of short text to prepare students for the activities
               for the topic. The text is shown on the course page beside the
@@ -90,9 +99,14 @@ const ModuleBuilder = () => {
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button className="bg-primary hover:bg-primary/90">
-              Add Module
-            </Button>
+            <DialogClose asChild>
+              <Button
+                className="bg-primary hover:bg-primary/90"
+                onClick={handleAddModule}
+              >
+                Add Module
+              </Button>
+            </DialogClose>
           </div>
         </DialogContent>
       </Dialog>

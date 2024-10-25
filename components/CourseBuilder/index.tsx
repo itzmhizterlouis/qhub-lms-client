@@ -4,7 +4,7 @@ import Step1CourseInfo from "./Step1CourseInfo";
 import Step2ModuleBuilder from "./Step2ModuleBuilder";
 
 const CourseBuilder = () => {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(2);
 
   const handleNextStep = () => setCurrentStep((prev) => prev + 1);
   const handlePrevStep = () => setCurrentStep((prev) => prev - 1);

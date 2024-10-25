@@ -14,7 +14,13 @@
   font-family: "Plus Jakarta Display", sans-serif;
   font-optical-sizing: auto;
 }
-
+.hidden-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
 .open-sans {
   font-family: "Open Sans", sans-serif;
   font-optical-sizing: auto;
