@@ -6,86 +6,106 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import {
-  IconEdit,
-  IconSquareRoundedPlusFilled,
-  IconTrash,
-} from "@tabler/icons-react";
+import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-  DialogFooter,
-  DialogClose,
 } from "@/components/ui/dialog";
 import LessonBuilder from "./LessonBuilder";
-
-const MODULEITEMCATGORIES = ["lesson", "quiz"];
-
-const ModuleItem = ({ module }: { module: Module }) => {
+import ModuleItemCategories from "./ModuleItemCategories";
+import { Lesson } from "@/lib/types";
+import ModuleLesson from "./ModuleLesson";
+const ModuleItem = ({
+  module,
+  setModules,
+  moduleIndex,
+  openModule,
+  setActiveModule,
+}: {
+  module: Module;
+  moduleIndex: number;
+  setModules: React.Dispatch<React.SetStateAction<Module[]>>;
+  openModule: () => void;
+  setActiveModule: React.Dispatch<React.SetStateAction<number | null>>;
+}) => {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [activeLesson, setActiveLesson] = useState<Lesson>();
+  const handleLessonClick = (lesson: Lesson) => {
+    setActiveLesson(lesson);
+    setIsDialogOpen(true);
+  };
+  const handleDeleteModule = (id: string) => {
+    setModules((prevModules) => prevModules.filter((m) => m.id !== id));
+  };
+  const handleDeleteLesson = (id: string) => {
+    setModules((prevModules) =>
+      prevModules.map((m) => {
+        if (m.id === module.id) {
+          return {
+            ...m,
+            moduleItems: m.moduleItems.filter((l) => l.id !== id),
+          };
+        }
+        return m;
+      })
+    );
+  };
 
   return (
     <>
-      <Accordion type="single" collapsible>
-        <AccordionItem value="item-1">
-          <AccordionTrigger className="hover:no-underline">
-            <div className="flex justify-between w-full">
-              <p className="text-lg flex gap-2 items-center capitalize">
-                <span className="text-base text-gray-700">Module 1:</span>
-                {module.name}
-              </p>
-              <div className="flex items-center gap-2 text-gray-500">
-                <IconEdit className="w-4 h-4 hover:text-gray-600" />
-                <IconTrash className="w-4 h-4 hover:text-gray-600" />
-              </div>
+      <AccordionItem
+        value={`module-${moduleIndex}`}
+        className="bg-gray-200 rounded-md p-4 py-0"
+      >
+        <AccordionTrigger className="hover:no-underline">
+          <div className="flex justify-between w-full">
+            <p className="text-lg flex gap-2 items-center capitalize">
+              <span className="text-base text-gray-700">
+                Module {moduleIndex + 1}:
+              </span>
+              {module.name}
+            </p>
+            <div className="flex items-center gap-2 text-gray-500">
+              <IconEdit
+                className="w-4 h-4 hover:text-gray-600"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setActiveModule(moduleIndex);
+                  openModule();
+                }}
+              />
+              <IconTrash
+                className="w-4 h-4 hover:text-gray-600"
+                onClick={() => handleDeleteModule(module.id)}
+              />
             </div>
-          </AccordionTrigger>
-          <AccordionContent>
-            <div className="flex gap-2 items-center">
-              {MODULEITEMCATGORIES.map((moduleItem, index) => {
-                let borderColor = "border-primary";
-                let hoverColor = "hover:bg-primary/10";
-                let iconColor = "text-primary";
-                if (moduleItem === "lesson") {
-                  borderColor = "border-primary";
-                  iconColor = "text-primary";
-                  hoverColor = "hover:bg-primary/10";
-                } else if (moduleItem === "quiz") {
-                  borderColor = "border-green-500";
-                  iconColor = "text-green-500";
-                  hoverColor = "hover:bg-green-500/10";
-                } else if (moduleItem === "task") {
-                  borderColor = "border-red-500";
-                  iconColor = "text-red-500";
-                  hoverColor = "hover:bg-red-500/10";
-                }
-
-                return (
-                  <button
-                    key={index}
-                    className={`flex items-center gap-2 border capitalize ${borderColor} p-2 rounded-md ${hoverColor}`}
-                    onClick={() => {
-                      setSelectedItem(moduleItem);
-                      setIsDialogOpen(true);
-                    }}
-                  >
-                    <IconSquareRoundedPlusFilled
-                      className={`w-5 h-5 ${iconColor}`}
-                    />
-                    {moduleItem}
-                  </button>
-                );
-              })}
+          </div>
+        </AccordionTrigger>
+        <AccordionContent>
+          {module.moduleItems.length > 0 && (
+            <div className="my-2 flex flex-col gap-2">
+              {module.moduleItems.map((lesson, index) => (
+                <ModuleLesson
+                  key={index}
+                  handleClick={handleLessonClick}
+                  lessonIndex={index}
+                  lesson={lesson}
+                  onDelete={handleDeleteLesson}
+                />
+              ))}
             </div>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
-
+          )}
+          <ModuleItemCategories
+            openDialog={setIsDialogOpen}
+            setSelectedItem={setSelectedItem}
+            setActiveLesson={setActiveLesson}
+          />
+        </AccordionContent>
+      </AccordionItem>
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent
           className="max-h-[90vh] flex flex-col overflow-hidden"
@@ -96,7 +116,13 @@ const ModuleItem = ({ module }: { module: Module }) => {
               {selectedItem ? selectedItem : "Item"}
             </DialogTitle>
           </DialogHeader>
-          {selectedItem === "lesson" && <LessonBuilder />}
+          {selectedItem === "lesson" && (
+            <LessonBuilder
+              setModules={setModules}
+              module={module}
+              propLesson={activeLesson}
+            />
+          )}
         </DialogContent>
       </Dialog>
     </>

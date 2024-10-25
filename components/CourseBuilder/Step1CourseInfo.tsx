@@ -3,7 +3,7 @@ import CourseInfoForm from "./CourseInfoForm";
 import { Button } from "../ui/button";
 const Step1CourseInfo = ({ onNext }: { onNext: () => void }) => {
   return (
-    <div>
+    <div className="h-full">
       <div className="border-b border-b-gray-300 p-6">
         <h1 className="text-lg font-semibold">Course Information</h1>
         <p className="text-sm text-gray-600">

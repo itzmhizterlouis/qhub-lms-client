@@ -4,11 +4,9 @@ import { IconCirclePlus, IconInfoCircle } from "@tabler/icons-react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
 import { v4 as uuidv4 } from "uuid";
@@ -18,61 +16,103 @@ import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import { Module } from "@/lib/types";
 import ModuleItem from "./ModuleItem";
+import { Accordion } from "@/components/ui/accordion";
 const ModuleBuilder = () => {
   const [modules, setModules] = useState<Module[]>([]);
-  const [moduleName, setModuleName] = useState("");
-  const [moduleSummary, setModuleSummary] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeModule, setActiveModule] = useState<number | null>(null);
+  const [newModule, setNewModule] = useState<Module>({
+    id: uuidv4(),
+    name:
+      activeModule && modules[activeModule] ? modules[activeModule]?.name : "",
+    summary:
+      activeModule && modules[activeModule]
+        ? modules[activeModule]?.summary
+        : "",
+    moduleItems:
+      activeModule && modules[activeModule]
+        ? modules[activeModule]?.moduleItems
+        : [],
+  });
+
+  const handleOpen = () => setIsOpen(true);
+  const handleClose = () => setIsOpen(false);
+
+  const handleUpdateModule = () => {
+    if (activeModule !== null) {
+      console.log("activeModule dey");
+      setModules((prev) =>
+        prev.map((prevModule, index) =>
+          index === activeModule ? newModule : prevModule
+        )
+      );
+    } else {
+      console.log("no active module");
+      setModules([...modules, newModule]);
+    }
+  };
+  console.log(activeModule, "Active module", newModule);
   const handleChange = (
     e:
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLTextAreaElement>
   ) => {
     const { id, value } = e.target;
-    if (id === "moduleName") {
-      setModuleName(value);
-    } else if (id === "moduleSummary") {
-      setModuleSummary(value);
-    }
+    setNewModule((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
   };
-  const handleAddModule = () => {
-    setModules([
-      ...modules,
-      { name: moduleName, summary: moduleSummary, id: uuidv4() },
-    ]);
-    setModuleName("");
-    setModuleSummary("");
+  const handleAddNewModule = () => {
+    setActiveModule(null);
+    setNewModule({
+      id: uuidv4(),
+      name: "",
+      summary: "",
+      moduleItems: [],
+    });
   };
   return (
-    <div className="p-6">
+    <div className="p-6 h-full">
       {modules.length === 0 ? (
         <p>No module created yet</p>
       ) : (
-        <div className="grid grid-cols-2 gap-4">
+        <Accordion type="single" collapsible className="grid gap-4">
           {modules.map((module, index) => {
-            return <ModuleItem key={index} module={module} />;
+            return (
+              <ModuleItem
+                key={index}
+                module={module}
+                setModules={setModules}
+                moduleIndex={index}
+                openModule={handleOpen}
+                setActiveModule={setActiveModule}
+              />
+            );
           })}
-        </div>
+        </Accordion>
       )}
-      <Dialog>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
-          <button className="bg-primary mt-2 text-white text-sm px-4 p-2 rounded-md flex items-center ">
+          <button
+            className="bg-primary mt-2 text-white text-sm px-4 p-2 rounded-md flex items-center "
+            onClick={handleAddNewModule}
+          >
             <IconCirclePlus className="inline mr-2 w-5 h-5" />
             Add New Module
           </button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-xl">
+        <DialogContent className="sm:max-w-xl" aria-describedby={undefined}>
           <DialogHeader>
-            <DialogTitle>Add Module</DialogTitle>
-            <DialogDescription>
-              Add the fist module for the course
-            </DialogDescription>
+            <DialogTitle>Module</DialogTitle>
           </DialogHeader>
           <div className="grid gap-4">
-            <Label htmlFor="moduleName">Module Name</Label>
+            <Label htmlFor="name">Module Name</Label>
             <Input
-              id="moduleName"
+              id="name"
               className="col-span-3"
               onChange={handleChange}
+              value={newModule.name}
             />
             <p className=" flex items-center gap-2 text-gray-500 text-sm">
               <IconInfoCircle className="w-5 h-5" />
@@ -81,12 +121,13 @@ const ModuleBuilder = () => {
             </p>
           </div>
           <div className="grid gap-4 mt-4">
-            <Label htmlFor="moduleSummary">Module Summary</Label>
+            <Label htmlFor="summary">Module Summary</Label>
             <Textarea
               placeholder="Type summary here."
-              id="moduleSummary"
+              id="summary"
               rows={4}
               onChange={handleChange}
+              value={newModule.summary}
             />
             <p className=" flex items-center gap-2 text-gray-500 text-sm">
               <IconInfoCircle className="w-5 h-5" />
@@ -102,14 +143,15 @@ const ModuleBuilder = () => {
             <DialogClose asChild>
               <Button
                 className="bg-primary hover:bg-primary/90"
-                onClick={handleAddModule}
+                onClick={handleUpdateModule}
               >
-                Add Module
+                Update Module
               </Button>
             </DialogClose>
           </div>
         </DialogContent>
       </Dialog>
+    
     </div>
   );
 };

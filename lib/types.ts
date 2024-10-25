@@ -16,15 +16,16 @@ export type Employee = {
   email: string;
 };
 export interface Lesson {
+  id: string;
   name: string;
   content: string;
   featuredImage: string;
   video: string;
-  exerciseFiles: string[];
+  exerciseFiles: File[];
 }
 export interface Module {
   id: string;
   name: string;
   summary?: string;
-  moduleItems?: Lesson[];
+  moduleItems: Lesson[];
 }

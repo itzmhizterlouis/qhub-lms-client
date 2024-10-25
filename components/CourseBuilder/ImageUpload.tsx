@@ -55,7 +55,7 @@ const ImageUpload = ({
                 File format: <b>.jpg, .png</b>
               </p>
               <p className="my-2 text-xs ">Or</p>
-              <Button className="bg-primary hover:bg-primary/90">
+              <Button className="bg-primary hover:bg-primary/90" type="button">
                 <label htmlFor="image-upload" className="cursor-pointer">
                   Browse Image
                 </label>

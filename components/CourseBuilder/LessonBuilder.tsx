@@ -9,19 +9,33 @@ import "react-quill/dist/quill.snow.css";
 import { IconLink, IconX } from "@tabler/icons-react";
 import ImageUpload from "./ImageUpload";
 import VideoUpload from "./VideoUpload";
-import { Lesson } from "@/lib/types";
+import { Lesson, Module } from "@/lib/types";
 import { DialogFooter, DialogClose } from "@/components/ui/dialog";
-const LessonBuilder = () => {
-  const [lessonContent, setLessonContent] = useState("");
-  const [featuredImage, setFeaturedImage] = useState<string | null>("");
-  const [lessonVideo, setLessonVideo] = useState<string | null>("");
-  const [attachments, setAttachments] = useState<File[]>([]);
+const LessonBuilder = ({
+  module,
+  setModules,
+  propLesson,
+}: {
+  module: Module;
+  setModules: React.Dispatch<React.SetStateAction<Module[]>>;
+  propLesson?: Lesson;
+}) => {
+  const [featuredImage, setFeaturedImage] = useState<string | null>(
+    propLesson?.featuredImage || ""
+  );
+  const [lessonVideo, setLessonVideo] = useState<string | null>(
+    propLesson?.video || ""
+  );
+  const [attachments, setAttachments] = useState<File[]>(
+    propLesson?.exerciseFiles || []
+  );
   const [lesson, setLesson] = useState<Lesson>({
-    name: "",
-    content: "",
-    featuredImage: "",
-    video: "",
-    exerciseFiles: [],
+    id: propLesson?.id || "",
+    name: propLesson?.name || "",
+    content: propLesson?.content || "",
+    featuredImage: propLesson?.featuredImage || "",
+    video: propLesson?.video || "",
+    exerciseFiles: propLesson?.exerciseFiles || [],
   });
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -46,10 +60,17 @@ const LessonBuilder = () => {
     e.preventDefault();
     const newLesson = {
       ...lesson,
-      featuredImage: featuredImage,
-      video: lessonVideo,
+      featuredImage: featuredImage!,
+      video: lessonVideo!,
       exerciseFiles: attachments,
     };
+    setModules((prev) =>
+      prev.map((prevModule) =>
+        prevModule.id === module.id
+          ? { ...module, moduleItems: [...module.moduleItems, newLesson] }
+          : module
+      )
+    );
     console.log(newLesson, "newLesson");
   };
   console.log("lesson", lesson);
@@ -61,7 +82,12 @@ const LessonBuilder = () => {
     >
       <div className="grid gap-2">
         <Label htmlFor="name">Lesson Name</Label>
-        <Input id="name" className="col-span-3" onChange={handleChange} />
+        <Input
+          id="name"
+          className="col-span-3"
+          onChange={handleChange}
+          value={lesson.name}
+        />
       </div>
       <div className="grid gap-2 mt-4">
         <Label htmlFor="lessonContent">Lesson Content</Label>
@@ -97,7 +123,7 @@ const LessonBuilder = () => {
       </div>
       <div className="grid gap-2 mt-4 w-[50%]">
         <Label htmlFor="lessonResources">Extra Lesson Resources</Label>
-        <Button variant={"outline"}>
+        <Button variant={"outline"} type="button">
           <label
             htmlFor="attachments"
             className="cursor-pointer flex items-center gap-2"
@@ -146,11 +172,11 @@ const LessonBuilder = () => {
         <DialogClose asChild>
           <Button variant="outline">Cancel</Button>
         </DialogClose>
-        {/* <DialogClose asChild> */}
-        <Button className="bg-primary hover:bg-primary/90" type="submit">
-          Update Module
-        </Button>
-        {/* </DialogClose> */}
+        <DialogClose asChild>
+          <Button className="bg-primary hover:bg-primary/90" type="submit">
+            Update Module
+          </Button>
+        </DialogClose>
       </DialogFooter>
     </form>
   );
