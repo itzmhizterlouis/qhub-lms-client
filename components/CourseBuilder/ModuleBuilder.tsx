@@ -29,9 +29,13 @@ const ModuleBuilder = () => {
       activeModule && modules[activeModule]
         ? modules[activeModule]?.summary
         : "",
-    moduleItems:
+    lessons:
       activeModule && modules[activeModule]
-        ? modules[activeModule]?.moduleItems
+        ? modules[activeModule]?.lessons
+        : [],
+    quizzes:
+      activeModule && modules[activeModule]
+        ? modules[activeModule]?.quizzes
         : [],
   });
 
@@ -69,7 +73,8 @@ const ModuleBuilder = () => {
       id: uuidv4(),
       name: "",
       summary: "",
-      moduleItems: [],
+      lessons: [],
+      quizzes: [],
     });
   };
   return (
@@ -151,7 +156,6 @@ const ModuleBuilder = () => {
           </div>
         </DialogContent>
       </Dialog>
-    
     </div>
   );
 };

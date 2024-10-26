@@ -7,7 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { IconEdit, IconTrash } from "@tabler/icons-react";
-import { Button } from "../ui/button";
+import ModuleQuiz from "./ModuleQuiz";
 import {
   Dialog,
   DialogContent,
@@ -16,8 +16,9 @@ import {
 } from "@/components/ui/dialog";
 import LessonBuilder from "./LessonBuilder";
 import ModuleItemCategories from "./ModuleItemCategories";
-import { Lesson } from "@/lib/types";
+import { Lesson, Quiz } from "@/lib/types";
 import ModuleLesson from "./ModuleLesson";
+import QuizBuilder from "../QuizBuilder";
 const ModuleItem = ({
   module,
   setModules,
@@ -34,7 +35,9 @@ const ModuleItem = ({
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [activeLesson, setActiveLesson] = useState<Lesson>();
+  const [activeQuiz, setActiveQuiz] = useState<Quiz>();
   const handleLessonClick = (lesson: Lesson) => {
+    setSelectedItem("lesson");
     setActiveLesson(lesson);
     setIsDialogOpen(true);
   };
@@ -47,14 +50,31 @@ const ModuleItem = ({
         if (m.id === module.id) {
           return {
             ...m,
-            moduleItems: m.moduleItems.filter((l) => l.id !== id),
+            lessons: m.lessons?.filter((l) => l.id !== id),
           };
         }
         return m;
       })
     );
   };
-
+  const handleQuizClick = (quiz: Quiz) => {
+    setSelectedItem("quiz");
+    setActiveQuiz(quiz);
+    setIsDialogOpen(true);
+  };
+  const handleDeleteQuiz = (id: string) => {
+    setModules((prevModules) =>
+      prevModules.map((m) => {
+        if (m.id === module.id) {
+          return {
+            ...m,
+            quizzes: m.quizzes?.filter((q) => q.id !== id),
+          };
+        }
+        return m;
+      })
+    );
+  };
   return (
     <>
       <AccordionItem
@@ -86,15 +106,28 @@ const ModuleItem = ({
           </div>
         </AccordionTrigger>
         <AccordionContent>
-          {module.moduleItems.length > 0 && (
+          {module.lessons && module.lessons.length > 0 && (
             <div className="my-2 flex flex-col gap-2">
-              {module.moduleItems.map((lesson, index) => (
+              {module.lessons.map((lesson, index) => (
                 <ModuleLesson
                   key={index}
                   handleClick={handleLessonClick}
                   lessonIndex={index}
                   lesson={lesson}
                   onDelete={handleDeleteLesson}
+                />
+              ))}
+            </div>
+          )}
+          {module.quizzes && module.quizzes.length > 0 && (
+            <div className="my-2 flex flex-col gap-2">
+              {module.quizzes.map((quiz, index) => (
+                <ModuleQuiz
+                  key={index}
+                  handleClick={handleQuizClick}
+                  quizIndex={index}
+                  quiz={quiz}
+                  onDelete={handleDeleteQuiz}
                 />
               ))}
             </div>
@@ -108,7 +141,7 @@ const ModuleItem = ({
       </AccordionItem>
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent
-          className="max-h-[90vh] flex flex-col overflow-hidden"
+          className="sm:max-w-xl overflow-hidden "
           aria-describedby={undefined}
         >
           <DialogHeader>
@@ -116,13 +149,22 @@ const ModuleItem = ({
               {selectedItem ? selectedItem : "Item"}
             </DialogTitle>
           </DialogHeader>
-          {selectedItem === "lesson" && (
-            <LessonBuilder
-              setModules={setModules}
-              module={module}
-              propLesson={activeLesson}
-            />
-          )}
+          <div className="overflow-y-auto  p-2 max-h-[60vh]">
+            {selectedItem === "lesson" && (
+              <LessonBuilder
+                setModules={setModules}
+                module={module}
+                propLesson={activeLesson}
+              />
+            )}
+            {selectedItem === "quiz" && (
+              <QuizBuilder
+                setModules={setModules}
+                module={module}
+                propQuiz={activeQuiz}
+              />
+            )}
+          </div>
         </DialogContent>
       </Dialog>
     </>

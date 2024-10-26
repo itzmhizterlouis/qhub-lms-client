@@ -17,7 +17,7 @@ import { GoMortarBoard } from "react-icons/go";
 export const sidebar = {
   employee: [
     {
-      name: "Home",
+      name: "Dashboard",
       icon: grid,
       link: "/dashboard",
     },
@@ -49,7 +49,7 @@ export const sidebar = {
   ],
   admin: [
     {
-      name: "Home",
+      name: "Dashboard",
       icon: <IconLayout2 />,
       link: "/dashboard",
     },

@@ -1,4 +1,5 @@
 "use client";
+import { v4 as uuidv4 } from "uuid";
 import React, { useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
@@ -30,7 +31,7 @@ const LessonBuilder = ({
     propLesson?.exerciseFiles || []
   );
   const [lesson, setLesson] = useState<Lesson>({
-    id: propLesson?.id || "",
+    id: propLesson?.id || uuidv4(),
     name: propLesson?.name || "",
     content: propLesson?.content || "",
     featuredImage: propLesson?.featuredImage || "",
@@ -64,22 +65,34 @@ const LessonBuilder = ({
       video: lessonVideo!,
       exerciseFiles: attachments,
     };
-    setModules((prev) =>
-      prev.map((prevModule) =>
-        prevModule.id === module.id
-          ? { ...module, moduleItems: [...module.moduleItems, newLesson] }
-          : module
-      )
-    );
+    if (propLesson) {
+      setModules((prev) =>
+        prev.map((prevModule) =>
+          prevModule.id === module.id
+            ? {
+                ...module,
+                lessons: prevModule.lessons?.map((l) =>
+                  l.id === lesson.id ? newLesson : l
+                ),
+              }
+            : module
+        )
+      );
+    } else {
+      setModules((prev) =>
+        prev.map((prevModule) =>
+          prevModule.id === module.id
+            ? { ...module, lessons: [...module.lessons!, newLesson] }
+            : module
+        )
+      );
+    }
     console.log(newLesson, "newLesson");
   };
   console.log("lesson", lesson);
 
   return (
-    <form
-      className="overflow-y-auto hidden-scrollbar p-4 space-y-6"
-      onSubmit={handleSubmit}
-    >
+    <form onSubmit={handleSubmit}>
       <div className="grid gap-2">
         <Label htmlFor="name">Lesson Name</Label>
         <Input
@@ -106,14 +119,6 @@ const LessonBuilder = ({
         />
       </div>
       <div className="grid gap-2 mt-4">
-        <Label htmlFor="featuredImage">Featured Image</Label>
-        <ImageUpload
-          className="h-[180px]"
-          file={featuredImage}
-          setFile={setFeaturedImage}
-        />
-      </div>
-      <div className="grid gap-2 mt-4">
         <Label htmlFor="video">Lesson Video</Label>
         <VideoUpload
           className="h-[180px]"
@@ -121,6 +126,15 @@ const LessonBuilder = ({
           setFile={setLessonVideo}
         />
       </div>
+      <div className="grid gap-2 mt-4">
+        <Label htmlFor="featuredImage">Featured Image</Label>
+        <ImageUpload
+          className="h-[180px]"
+          file={featuredImage}
+          setFile={setFeaturedImage}
+        />
+      </div>
+
       <div className="grid gap-2 mt-4 w-[50%]">
         <Label htmlFor="lessonResources">Extra Lesson Resources</Label>
         <Button variant={"outline"} type="button">
@@ -168,7 +182,7 @@ const LessonBuilder = ({
           </div>
         </div>
       )}
-      <DialogFooter className="flex !justify-between w-full flex-row">
+      <DialogFooter className="flex !justify-between w-full mt-4 flex-row">
         <DialogClose asChild>
           <Button variant="outline">Cancel</Button>
         </DialogClose>

@@ -7,11 +7,9 @@ import { IconCircleCheckFilled } from "@tabler/icons-react";
 const steps = [
   {
     label: "Course Information",
-    component: Step1CourseInfo,
   },
   {
     label: "Module & Quiz Creation",
-    component: Step2ModuleBuilder,
   },
 ];
 const CourseBuilder = () => {
@@ -19,22 +17,42 @@ const CourseBuilder = () => {
 
   const handleNextStep = () => setCurrentStep((prev) => prev + 1);
   const handlePrevStep = () => setCurrentStep((prev) => prev - 1);
-
+  const handleStepClick = (index: number) => {
+    setCurrentStep(index);
+  };
   return (
     <>
       <div className="flex gap-4 items-center my-2">
-        {steps.map((step, index) => {
-          return (
-            <p
-              key={index}
-              className={`text-sm flex items-center gap-2 ${
-                index < currentStep ? "text-primary" : "text-gray-500"
+        {steps.map((step, index) => (
+          <div
+            key={index}
+            onClick={() => handleStepClick(index + 1)}
+            className={`flex items-center gap-2 text-sm cursor-pointer ${
+              index + 1 < currentStep ? "text-primary" : "text-gray-500"
+            }`}
+          >
+            {index + 1 < currentStep ? (
+              <IconCircleCheckFilled className="w-5 h-5 text-primary" />
+            ) : (
+              <span
+                className={`w-5 h-5 flex items-center justify-center rounded-full ${
+                  index + 1 === currentStep
+                    ? "bg-primary text-white"
+                    : "bg-gray-300"
+                }`}
+              >
+                {index + 1}
+              </span>
+            )}
+            <span
+              className={`${
+                index + 1 <= currentStep ? "font-semibold" : "font-normal"
               }`}
             >
-              <IconCircleCheckFilled className="w-5 h-5" /> {step.label}
-            </p>
-          );
-        })}
+              {step.label}
+            </span>
+          </div>
+        ))}
       </div>
       <div className="w-full mt-4 min-h-[calc(100vh-200px)] bg-white rounded-md  border border-gray-300">
         {currentStep === 1 && <Step1CourseInfo onNext={handleNextStep} />}
