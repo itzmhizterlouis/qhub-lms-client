@@ -1,5 +1,5 @@
 "use client";
-import { sidebar } from "@/lib/data";
+import { adminSidebar, employeeSidebar } from "@/lib/data";
 import React from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -13,7 +13,7 @@ const Bottombar = () => {
   };
 
   const role = user.role;
-  const activeSidebar = sidebar[role];
+  const activeSidebar = role === "employee" ? employeeSidebar : adminSidebar;
 
   return (
     <section className="bg-yellow/5 right-0 w-full fixed bottom-0 rounded-t-3xl p-4 backdrop-blur-lg xs:px-6 md:hidden">
