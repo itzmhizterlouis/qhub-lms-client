@@ -80,7 +80,7 @@ export const employees = [
     id: "1",
     name: "John Doe",
     email: "taiwo@gmail.com",
-    role: "admin",
+    role: "employee",
     status: "active",
   },
   {
