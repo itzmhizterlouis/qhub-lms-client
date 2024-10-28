@@ -22,7 +22,7 @@ const InviteEmployeeSheet = () => {
           Invite Employee
         </Button>
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="px-0 py-4">
         {isBulk ? (
           <BulkInviteEmployee onBack={handleGoBack} />
         ) : (
