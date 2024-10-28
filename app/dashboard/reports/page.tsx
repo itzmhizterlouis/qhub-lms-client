@@ -1,6 +1,6 @@
 import ReportsPageStat from "@/components/Admin/ReportsPageStat";
 import LearningTimeChart from "@/components/Charts/LearningTimeChart";
-import Course from "@/components/ui/Course";
+import Course from "@/components/Course";
 import React from "react";
 import { FaPlus } from "react-icons/fa6";
 
