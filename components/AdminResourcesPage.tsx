@@ -19,7 +19,7 @@ const AdminResourcesPage = () => {
             <div className="grid grid-cols-4 gap-6">
               {resources.map((resource, idx) => (
                 <Link
-                  href={`/resources/${resource.name
+                  href={`/dashboard/resources/${resource.name
                     .toLowerCase()
                     .replace(" ", "-")}`}
                   key={idx}
