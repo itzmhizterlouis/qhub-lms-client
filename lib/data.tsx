@@ -47,11 +47,11 @@ export const sidebar = [
     icon: <IconChartPie />,
     link: "/dashboard/reports",
   },
-  {
-    name: "Profile",
-    icon: <IconUser />,
-    link: "/dashboard/profile",
-  },
+  // {
+  //   name: "Profile",
+  //   icon: <IconUser />,
+  //   link: "/dashboard/profile",
+  // },
 ];
 
 export const modules = [
