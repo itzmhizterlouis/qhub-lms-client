@@ -56,13 +56,13 @@ export default function EmployeeChart() {
   const chartData = timeRange === "7d" ? weeklyData : monthlyData;
   return (
     <Card className="rounded-3xl flex flex-col ">
-      <CardHeader className="flex w-full flex-row justify-between items-center space-y-2 pb-4">
+      <CardHeader className="flex w-full  max-md:flex-col flex-row justify-between items-center space-y-2 pb-4">
         <div>
           <CardTitle className="text-sm font-medium flex items-center text-slate-600 font-plus">
             <IconBook className="h-4 w-4  text-muted-foreground inline mr-2" />
             Total Number of Employees
           </CardTitle>
-          <CardDescription className="text-2xl mt-2 text-black flex flex-col font-bold">
+          <CardDescription className="text-2xl max-md:text-center mt-2 text-black flex flex-col font-bold">
             <>
               50
               <span className={`text-xs text-slate-500 mt-1`}>

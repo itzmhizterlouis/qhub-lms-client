@@ -8,7 +8,7 @@ import Link from "next/link";
 const AdminResourcesPage = () => {
   return (
     <div className="p-6">
-      <div className="flex max-md:flex-col justify-between">
+      <div className="flex max-lg:flex-col justify-between">
         <h2 className="font-semibold">Resources</h2>
         <UploadResource />
       </div>
@@ -16,7 +16,7 @@ const AdminResourcesPage = () => {
         <BrowseResourceHeader />
         <div className="p-6 h-[calc(100%-80px)] overflow-y-auto ">
           {resources.length > 0 ? (
-            <div className="grid grid-cols-4 gap-6">
+            <div className="grid grid-cols-4 gap-6 max-lg:grid-cols-2">
               {resources.map((resource, idx) => (
                 <Link
                   href={`/dashboard/resources/${resource.name

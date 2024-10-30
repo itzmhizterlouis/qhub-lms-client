@@ -123,13 +123,13 @@ import { IconBook } from "@tabler/icons-react";
 export default function LearningTimeChart() {
   return (
     <Card className="rounded-3xl flex flex-col ">
-      <CardHeader>
+      <CardHeader className="max-md:items-center flex justify-center">
         <CardTitle className="text-sm font-medium flex items-center text-slate-600 font-plus">
           <IconBook className="h-4 w-4  text-muted-foreground inline mr-2" />
           Learning Hours
         </CardTitle>
 
-        <CardDescription className="text-2xl mt-2 text-black flex flex-col font-bold">
+        <CardDescription className="text-2xl max-md:text-center mt-2 text-black flex flex-col font-bold">
           <>
             50hrs
             <span className={`text-xs text-slate-500 mt-1`}>

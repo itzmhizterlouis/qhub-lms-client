@@ -54,14 +54,14 @@ export default function CourseEnrollmentChart() {
   const chartData = timeRange === "7d" ? weeklyData : monthlyData;
   return (
     <Card className="rounded-3xl flex flex-col  ">
-      <CardHeader className="flex w-full flex-row justify-between items-center space-y-2 pb-4">
+      <CardHeader className="flex max-md:flex-col w-full flex-row justify-between items-center space-y-2 pb-4">
         <div>
           <CardTitle className="text-sm font-medium text-black font-plus  flex items-center">
             <ChartSpline className="h-4 w-4 text-muted-foreground inline mr-2" />{" "}
             Course Enrollments
           </CardTitle>
 
-          <CardDescription className="text-xs mt-2 text-slate-500 flex flex-col  font-bold">
+          <CardDescription className="text-xs max-md:text-center mt-2 text-slate-500 flex flex-col  font-bold">
             +20% this month
           </CardDescription>
         </div>

@@ -13,11 +13,11 @@ const Page = () => {
         <ReportsPageStat />
         <LearningTimeChart />
       </div>
-      <div className="grid grid-cols-2 mt-6 gap-6">
+      <div className="grid lg:grid-cols-2 mt-6 gap-6">
         <CourseEnrollmentChart />
         <CourseCompletionChart />
       </div>
-      <div className="grid grid-cols-2 mt-6 gap-6">
+      <div className="grid lg:grid-cols-2 mt-6 gap-6">
         <CourseCategoryChart />
         <EmployeeChart />
       </div>

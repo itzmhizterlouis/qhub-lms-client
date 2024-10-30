@@ -12,7 +12,7 @@ const UploadResource = () => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button className="bg-primary w-fit max-md:mt-2 text-white hover:bg-primary/90">
+        <Button className="bg-primary w-fit max-lg:mt-2 text-white hover:bg-primary/90">
           <IconFilePlus className="inline mr-2 w-5 h-5" />
           Upload Resource
         </Button>

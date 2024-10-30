@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader } from "../ui/card";
 
 const ReportsPageStat = () => {
   return (
-    <div className="grid grid-cols-4 gap-6">
+    <div className="grid lg:grid-cols-4 gap-6 md:grid-cols-2">
       {reportsPageStat.map((stat, index) => {
         const isPositive = stat.percent.includes("+");
         return (
