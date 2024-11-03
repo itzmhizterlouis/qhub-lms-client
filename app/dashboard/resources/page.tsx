@@ -4,7 +4,7 @@ import React from "react";
 
 const Page = () => {
   const user = {
-    role: "employee",
+    role: "admin",
   };
   const role = user.role;
   return (

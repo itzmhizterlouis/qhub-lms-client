@@ -8,7 +8,7 @@ import InviteEmployeeSheet from "@/components/Admin/InviteEmployeeSheet";
 
 const Page = () => {
   const user = {
-    role: "employee",
+    role: "admin",
   };
   const role = user.role;
   if (role !== "admin") return notFound();
