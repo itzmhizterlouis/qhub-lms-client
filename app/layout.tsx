@@ -2,8 +2,12 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Head from "next/head";
+<<<<<<< HEAD
 import ApolloClientProvider from "@/providers/ApolloClientProvider";
 import { Toaster } from "react-hot-toast";      
+=======
+import { ThemeProvider } from "./ThemeProvider";
+>>>>>>> 378d3d01ef40fbc431a9b5e2521ce6ba54ecff7e
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -28,9 +32,20 @@ export default function RootLayout({
         />
       </Head>
       <body className={inter.className}>
+<<<<<<< HEAD
         <ApolloClientProvider>{children}
           <Toaster />
         </ApolloClientProvider>
+=======
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem={false}
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+>>>>>>> 378d3d01ef40fbc431a9b5e2521ce6ba54ecff7e
       </body>
     </html>
   );
