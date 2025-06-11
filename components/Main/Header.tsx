@@ -1,69 +1,50 @@
-import React from "react";
-import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+"use client";
+import React, { useEffect, useState } from "react";
 import accessbank from "@/public/accessbank.svg";
 import Image from "next/image";
-import bell from "@/assets/icons/bell.svg";
-import avatar from "@/public/avatar.svg";
-import { IconMenu2 } from "@tabler/icons-react";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import Sidebar from "../Sidebar/Sidebar";
+import Cookies from "js-cookie";
 
 const Header = () => {
-  return (
-    <div className="p-6 max-md:p-4  shadow-md border-b border-b-gray-200 w-full flex justify-between  items-center ">
-      <div className="flex justify-between items-center">
-        <Image
-          src={accessbank}
-          alt="logo"
-          width={150}
-          height={50}
-          className="max-md:w-24"
-        />
-      </div>
-      <div className=" flex justify-between gap-6 items-center">
-        <Image
-          src={bell}
-          alt="bell"
-          width={20}
-          height={20}
-          className="max-md:hidden"
-        />
-        <Sheet>
-          <SheetTrigger asChild>
-            <IconMenu2 className="md:hidden" />
-          </SheetTrigger>
-          <SheetContent
-            side={"left"}
-            className="p-0 w-[200px]"
-            aria-describedby={undefined}
-          >
-            <VisuallyHidden.Root>
-              <SheetHeader>
-                <SheetTitle>Sidebar</SheetTitle>
-                <SheetDescription>Sidebar</SheetDescription>
-              </SheetHeader>
-            </VisuallyHidden.Root>
-            <Sidebar className="flex visible" />
-          </SheetContent>
-        </Sheet>
+  const [fullName, setFullName] = useState("");
+  const [role, setRole] = useState("");
+  const [userPic, setUserPic] = useState("/avatar.png");
+  const [logo, setLogo] = useState("");
 
-        <div className="flex gap-4 items-center">
-          <div className="flex justify-center flex-col max-xl:hidden">
-            <p className=" font-bold">John Doe</p>
-            <p className="text-sm text-gray-500">Employee</p>
-          </div>
+  useEffect(() => {
+    const firstName = Cookies.get("firstName") || "";
+    const lastName = Cookies.get("lastName") || "";
+    const userRole = Cookies.get("role");
+    const logo = Cookies.get("logo") || "";
+
+
+    const name = `${firstName} ${lastName}`;
+    const avatarUrl = `https://avatar.iran.liara.run/username?username=${firstName}+${lastName}`;
+    const readableRole = userRole === "organizationOwner" ? "Admin" : "Employee";
+
+    setFullName(name);
+    setRole(readableRole);
+    setUserPic(avatarUrl);
+    setLogo(logo);
+  }, []);
+
+  return (
+    <div className="py-6 px-2 shadow-md grid grid-cols-12 w-full items-center">
+      <div className="col-span-8 flex justify-between items-center px-4">
+        {logo && <Image src={logo} alt="logo" priority width={100} height={24} />}
+      </div>
+      <div className="col-span-4 flex justify-between lg:px-10 items-center justify-self-end">
+        <div className="flex gap-4">
           <Image
-            src={avatar}
+            src={userPic}
             alt="avatar"
-            className="w-10 h-10  cursor-pointer"
+            className="md:w-14 w-10 h-10 md:h-14 rounded-full"
+            width={20}
+            height={20}
           />
+          <div className="flex justify-center flex-col max-xl:hidden">
+            <p className="mb-1 text-[14px] font-bold">{fullName}</p>
+            <p className="text-sm text-gray-600">{role}</p>
+          </div>
         </div>
       </div>
     </div>
