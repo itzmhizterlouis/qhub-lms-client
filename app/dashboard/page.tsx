@@ -4,6 +4,7 @@ import EmployeeHome from "@/components/EmployeeHome";
 const Page = () => {
   const user = {
     role: "admin",
+    name: "Hey",
   };
   const role = user.role;
   return (
