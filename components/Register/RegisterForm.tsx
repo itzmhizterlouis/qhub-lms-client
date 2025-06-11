@@ -6,25 +6,33 @@ import LabelInputContainer from "../ui/Form/LabelInputContainer";
 import Password from "./Password";
 
 type RegisterFormProps = {
-  nameRef: React.RefObject<HTMLInputElement>;
+  firstNameRef: React.RefObject<HTMLInputElement>;
+  lastNameRef: React.RefObject<HTMLInputElement>;
+  phoneRef: React.RefObject<HTMLInputElement>;
   emailRef: React.RefObject<HTMLInputElement>;
-  categoryRef: React.RefObject<HTMLSelectElement>;
+  // categoryRef: React.RefObject<HTMLSelectElement>;
   passwordRef: React.RefObject<HTMLInputElement>;
   confirmPasswordRef: React.RefObject<HTMLInputElement>;
 };
 
 const RegisterForm: React.FC<RegisterFormProps> = ({
-  nameRef,
+  firstNameRef,
+  lastNameRef,
+  phoneRef,
   emailRef,
-  categoryRef,
+  // categoryRef,
   passwordRef,
   confirmPasswordRef,
 }) => {
   return (
     <div className="mt-4 2xl:mt-10 ">
       <LabelInputContainer className="my-4">
-        <Label htmlFor="name">Organization Name</Label>
-        <Input id="name" placeholder="Dax Inc" type="text" ref={nameRef} />
+        <Label htmlFor="firstName">First Name</Label>
+        <Input id="firstName" placeholder="John" type="text" ref={firstNameRef} />
+      </LabelInputContainer>
+      <LabelInputContainer className="my-4">
+        <Label htmlFor="lastName">Last Name</Label>
+        <Input id="lastName" placeholder="Doe" type="text" ref={lastNameRef} />
       </LabelInputContainer>
       <LabelInputContainer className="mb-4">
         <Label htmlFor="email">Email Address</Label>
@@ -35,7 +43,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
           ref={emailRef}
         />
       </LabelInputContainer>
-      <LabelInputContainer className="mb-4">
+      {/* <LabelInputContainer className="mb-4">
         <Label htmlFor="category">Category</Label>
         <select
           id="category"
@@ -49,6 +57,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
           <option value="Marketing">Marketing</option>
           <option value="Business">Business</option>
         </select>
+      </LabelInputContainer> */}
+      <LabelInputContainer className="my-4">
+        <Label htmlFor="phone">Phone</Label>
+        <Input id="phone" placeholder="+2348029283388" type="text" ref={phoneRef} />
       </LabelInputContainer>
       <Password label="Password" ref={passwordRef} />
       <Password label="Confirm Password" ref={confirmPasswordRef} />

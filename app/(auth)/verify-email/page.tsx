@@ -1,10 +1,16 @@
-
+"use client"
 import FormHeading from "@/components/ui/Form/FormHeading";
 import React from "react";
 import VerifyForm from "../../../components/Verify-email/VerifyForm";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const VerifyEmail = () => {
- 
+ const searchParams = useSearchParams();
+  const userId = searchParams.get("user");
+  const router = useRouter();
+  if (!userId) {
+    router.push('/register');
+  }
   return (
     <div>
       <FormHeading title="Verify Your Email" />
@@ -12,7 +18,7 @@ const VerifyEmail = () => {
         Please check your email for a 6 digits code and enter the code in the
         box below
       </p>
-      <VerifyForm />
+      <VerifyForm userId={userId} />
      
     </div>
   );

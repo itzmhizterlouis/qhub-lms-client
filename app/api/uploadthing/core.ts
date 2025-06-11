@@ -1,0 +1,12 @@
+import { createUploadthing, type FileRouter } from "uploadthing/server";
+
+const f = createUploadthing();
+
+export const ourFileRouter = {
+  logoUploader: f({ image: { maxFileSize: "4MB" } }) // accept image files only
+    .onUploadComplete(({ file }) => {
+      console.log("Uploaded file:", file.url);
+    }),
+} satisfies FileRouter;
+
+export type OurFileRouter = typeof ourFileRouter;

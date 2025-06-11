@@ -32,16 +32,28 @@ const FirstSetup = ({
 }) => {
   return (
     <div>
-      <LabelInputContainer className="my-4">
-        <Label htmlFor="name">Address *</Label>
-        <Input
-          id="address"
-          placeholder="5, Ogbomosho Street, Off Allen Avenue, Ikeja, Lagos"
-          type="text"
-          value={userInputs.address}
-          onChange={handleChange}
-        />
-      </LabelInputContainer>
+      <div className="flex gap-4 items-center">
+        <LabelInputContainer className="my-4">
+          <Label htmlFor="name">Name</Label>
+          <Input
+            id="name"
+            placeholder="ABC Org"
+            type="text"
+            value={userInputs.name}
+            onChange={handleChange}
+          />
+        </LabelInputContainer>
+        <LabelInputContainer className="my-4">
+          <Label htmlFor="name">Address *</Label>
+          <Input
+            id="address"
+            placeholder="5, Ogbomosho Street, Off Allen Avenue, Ikeja, Lagos"
+            type="text"
+            value={userInputs.address}
+            onChange={handleChange}
+          />
+        </LabelInputContainer>
+      </div>
       <div className="flex gap-4 items-center">
         <LabelInputContainer className="my-4">
           <Label htmlFor="name">Country *</Label>

@@ -2,7 +2,12 @@
 import React, { useState } from "react";
 import useVerifyForm from "@/hooks/useVerifyForm";
 import FormFooter from "../ui/Form/FormFooter";
-const VerifyForm: React.FC = () => {
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { useMutation } from "@apollo/client";
+import { VERIFY_USER } from "@/lib/graphql";
+const VerifyForm = ({ userId }: { userId?: string | null }) => {
+  const router = useRouter();
   const {
     code,
 
@@ -11,9 +16,10 @@ const VerifyForm: React.FC = () => {
     handlePaste,
     handleRef,
   } = useVerifyForm();
+  const [verifyUser, { loading }] = useMutation(VERIFY_USER);
   const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (code.includes("")) {
@@ -21,7 +27,23 @@ const VerifyForm: React.FC = () => {
       return;
     }
     setError("");
-    window.location.href = "/verified";
+
+    try {
+      const {data} = await verifyUser({
+        variables: {
+          input: {
+            otp: code.join(''),
+            userId,
+          },
+        },
+      });
+      toast.success("Verified successfully");      
+      
+      router.push(`/verified`);
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || "Something went wrong.");
+    }
   };
   return (
     <form className="mt-5" onSubmit={handleSubmit}>
@@ -43,6 +65,7 @@ const VerifyForm: React.FC = () => {
       </div>
       <div className="mt-4">
         <FormFooter
+          loading={loading}
           error={error}
           showExtraText={false}
           buttonText="Verify Email"

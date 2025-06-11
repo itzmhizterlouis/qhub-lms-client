@@ -2,7 +2,15 @@ import Image from "next/image";
 import React from "react";
 import image from "@/public/signinimage.jpeg";
 import qhub from "@/public/qhub.svg";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 const Signin: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const cookieStore = cookies();
+  const accessToken = cookieStore.get("accessToken")?.value;
+
+  if (accessToken) {
+    redirect("/dashboard");
+  }
   return (
     <div className="lg:grid lg:grid-cols-12 h-screen overflow-hidden bg-primary-light">
       <div className="lg:col-span-6 h-full w-full">

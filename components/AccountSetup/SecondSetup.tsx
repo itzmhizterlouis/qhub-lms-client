@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/Form/Input";
 import Image from "next/image";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa6";
 import { UserInputs } from "@/lib/types";
+import { LuLoader2 } from "react-icons/lu";
 const SecondSetup = ({
   userInputs,
   handleChange,
@@ -13,6 +14,8 @@ const SecondSetup = ({
   logoPreview,
   fileName,
   handleLogoChange,
+  isUploading,
+  loading,
 }: {
   handlePrevious: () => void;
   userInputs: UserInputs;
@@ -22,6 +25,8 @@ const SecondSetup = ({
   logoPreview: string | null;
   fileName: string | null;
   handleLogoChange: (e: any) => void;
+  isUploading?: boolean;
+  loading?: boolean;
 }) => {
   return (
     <>
@@ -65,23 +70,33 @@ const SecondSetup = ({
           accept="image/*"
           className="hidden"
         />
-        <div
-          className={`flex  ${
-            fileName ? "justify-between " : "justify-end"
-          } w-full items-center h-10 border-none bg-gray-50   shadow-input rounded-md p-2 px-3 text-sm   
+        {!isUploading && (
+          <div
+            className={`flex  ${
+              fileName ? "justify-between " : "justify-end"
+            } w-full items-center h-10 border-none bg-gray-50   shadow-input rounded-md p-2 px-3 text-sm   
          `}
-        >
-          {fileName && (
-            <p className="text-wrap w-[150px] text-neutral-400 ">{fileName}</p>
-          )}
-
-          <label
-            htmlFor="organization-logo"
-            className="cursor-pointer  bg-primary-light text-black p-1 px-2 text-xs rounded-md"
           >
-            Browse File
-          </label>
-        </div>
+            {fileName && (
+              <p className="text-wrap w-[150px] text-neutral-400 ">
+                {fileName}
+              </p>
+            )}
+
+            <label
+              htmlFor="organization-logo"
+              className="cursor-pointer  bg-primary-light text-black p-1 px-2 text-xs rounded-md"
+            >
+              Browse File
+            </label>
+          </div>
+        )}
+        {isUploading && (
+          <div className="flex items-center gap-2 mt-2">
+            <LuLoader2 className="animate-spin w-4 h-4" />
+            <span className="text-sm text-neutral-500">Uploading... Please wait</span>
+          </div>
+        )}
         {logoPreview && (
           <div className="mt-4">
             <Image
@@ -107,7 +122,8 @@ const SecondSetup = ({
           <FaArrowLeft /> Go back
         </button>
         <button className="flex items-center gap-2 bg-primary rounded-md text-white  px-4 md:px-6 max-md:text-sm p-2 mt-4">
-          Submit <FaArrowRight />
+          {loading && <LuLoader2 className="animate-spin w-4 h-4 mr-2" />}
+          Submit
         </button>
       </div>
     </>

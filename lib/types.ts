@@ -7,4 +7,5 @@ export interface UserInputs {
   city: string;
   zipCode: string;
   website: string;
+  name: string;
 }

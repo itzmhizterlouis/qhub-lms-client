@@ -4,14 +4,25 @@ import FirstSetup from "./FirstSetup";
 import SecondSetup from "./SecondSetup";
 import { useRouter } from "next/navigation";
 import { UserInputs } from "@/lib/types";
-const AccountSetupForm = () => {
+import { CREATE_ORGANIZATION } from "@/lib/graphql";
+import { useMutation } from "@apollo/client";
+import toast from "react-hot-toast";
+import Cookies from "js-cookie";
+import { useUploadThing } from "@/utils/uploadthing";
+
+const AccountSetupForm = ({ email }: { email: string }) => {
   const [showSecondSetup, setShowSecondSetup] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [countryId, setCountryId] = useState<number | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
   const router = useRouter();
+  const [organizationInput, { loading }] = useMutation(CREATE_ORGANIZATION);
+
+  const { startUpload, isUploading } = useUploadThing("logoUploader");
+
   const [userInputs, setUserInputs] = useState<UserInputs>({
+    name: "",
     address: "",
     city: "",
     state: "",
@@ -24,36 +35,33 @@ const AccountSetupForm = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserInputs({ ...userInputs, [e.target.id]: e.target.value });
-    
   };
+
   const handlePrevious = () => {
     setShowSecondSetup(false);
   };
 
   const handleNext = () => {
-    console.log(userInputs);
-
     if (
       !userInputs.address ||
       !userInputs.city ||
       !userInputs.state ||
       !userInputs.country ||
-      !userInputs.zipCode
+      !userInputs.zipCode ||
+      !userInputs.name
     ) {
       setError("Please fill in all fields");
       return;
-    } else {
-      setError(null);
-      setShowSecondSetup(true);
     }
+    setError(null);
+    setShowSecondSetup(true);
   };
+
   const handleZipCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value.length > 6 || isNaN(Number(e.target.value))) {
-      return;
-    } else {
-      setUserInputs({ ...userInputs, zipCode: e.target.value });
-    }
+    if (e.target.value.length > 6 || isNaN(Number(e.target.value))) return;
+    setUserInputs({ ...userInputs, zipCode: e.target.value });
   };
+
   const handleStateChange = (e: {
     id: number;
     name: string;
@@ -70,30 +78,84 @@ const AccountSetupForm = () => {
     setCountryId(e.id);
     setUserInputs({ ...userInputs, country: e.name });
   };
-  const handleLogoChange = (
+
+  const handleLogoChange = async (
     event: React.ChangeEvent<HTMLInputElement & { files: FileList }>
   ) => {
-    const file = event.target.files[0];
-    if (file) {
-      const previewURL = URL.createObjectURL(file);
-      setUserInputs((prev) => ({ ...prev, logo: previewURL }));
-      setLogoPreview(previewURL);
-      let formattedName = file.name;
-      if (file.name.length > 20) {
-        formattedName = file.name.slice(0, 10) + "...";
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const previewURL = URL.createObjectURL(file);
+    setLogoPreview(previewURL);
+
+    let formattedName = file.name;
+    if (file.name.length > 20) {
+      formattedName = file.name.slice(0, 10) + "...";
+    }
+    setFileName(formattedName);
+
+    try {
+      const uploaded = await startUpload([file]);
+      if (uploaded && uploaded[0]?.url) {
+        setUserInputs((prev) => ({
+          ...prev,
+          logo: uploaded[0].url,
+        }));
+        toast.success("Logo uploaded!");
+      } else {
+        toast.error("Upload failed");
       }
-      setFileName(formattedName);
+    } catch (err) {
+      console.error(err);
+      toast.error("Upload error");
     }
   };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!userInputs.employeeNo || !userInputs.logo) {
       setError("Please fill in all fields");
       return;
     }
 
-    router.push("/dashboard");
+    const parts = userInputs.employeeNo.split("-");
+    const numberOfUsers = parseInt(parts[1], 10);
+    const zipCode = parseFloat(userInputs.zipCode);
+
+    try {
+      const { data } = await organizationInput({
+        variables: {
+          input: {
+            address: userInputs.address,
+            city: userInputs.city,
+            country: userInputs.country,
+            email,
+            industryId: "6849333ea3a2c0ccba897339",
+            logo: userInputs.logo,
+            name: userInputs.name,
+            numberOfUsers,
+            state: userInputs.state,
+            websiteUrl: userInputs.website,
+            zipCode,
+          },
+        },
+      });
+
+      Cookies.set("organizationId", data.createOrganization._id, {
+        expires: 7,
+      });
+      Cookies.set("logo", data.createOrganization.logo, {
+        expires: 7,
+      });
+
+      toast.success("Organization created successfully");
+      router.push("/dashboard");
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || "Something went wrong.");
+    }
   };
+
   return (
     <form action="" className="mt-10" onSubmit={handleSubmit}>
       {showSecondSetup ? (
@@ -105,6 +167,8 @@ const AccountSetupForm = () => {
           logoPreview={logoPreview}
           fileName={fileName}
           handleLogoChange={handleLogoChange}
+          isUploading={isUploading}
+          loading={loading}
         />
       ) : (
         <FirstSetup
