@@ -1,12 +1,18 @@
-import DashboardHome from "@/components/Dashboard/Main/DashboardHome";
+import AdminHome from "@/components/Admin/AdminHome";
 import React from "react";
-
-const page = () => {
+import EmployeeHome from "@/components/EmployeeHome";
+const Page = () => {
+  const user = {
+    role: "admin",
+    name: "Hey",
+  };
+  const role = user.role;
   return (
     <div className="w-full h-full p-6">
-      <DashboardHome />
+      {role === "admin" && <AdminHome />}
+      {role === "employee" && <EmployeeHome />}
     </div>
   );
 };
 
-export default page;
+export default Page;

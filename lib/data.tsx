@@ -4,38 +4,54 @@ import test from "@/assets/icons/test.svg";
 import file from "@/assets/icons/file.svg";
 import chart from "@/assets/icons/chart.svg";
 import profile from "@/assets/icons/profile.svg";
-import { title } from "process";
+import {
+  IconBook,
+  IconBriefcase2,
+  IconChartPie,
+  IconChecks,
+  IconFile,
+  IconLayout2,
+  IconPuzzle,
+  IconUser,
+  IconUsers,
+} from "@tabler/icons-react";
+import { GoMortarBoard } from "react-icons/go";
 export const sidebar = [
   {
-    name: "Home",
-    icon: grid,
+    name: "Dashboard",
+    icon: <IconLayout2 />,
     link: "/dashboard",
   },
   {
+    name: "Employees",
+    icon: <IconBriefcase2 />,
+    link: "/dashboard/employees",
+  },
+  {
     name: "Courses",
-    icon: gradcap,
+    icon: <GoMortarBoard className="font-[1000] text-2xl" />,
     link: "/dashboard/courses",
   },
-  {
-    name: "Tests",
-    icon: test,
-    link: "/dashboard/tests",
-  },
+  // {
+  //   name: "Tests",
+  //   icon: <IconPuzzle />,
+  //   link: "/dashboard/tests",
+  // },
   {
     name: "Resources",
-    icon: file,
+    icon: <IconFile />,
     link: "/dashboard/resources",
   },
-  {
-    name: "Reports",
-    icon: chart,
-    link: "/dashboard/reports",
-  },
-  {
-    name: "Profile",
-    icon: profile,
-    link: "/dashboard/profile",
-  },
+  // {
+  //   name: "Reports",
+  //   icon: <IconChartPie />,
+  //   link: "/dashboard/reports",
+  // },
+  // {
+  //   name: "Profile",
+  //   icon: <IconUser />,
+  //   link: "/dashboard/profile",
+  // },
 ];
 
 export const modules = [
@@ -343,5 +359,84 @@ export const resources = [
     name: "Resource 7",
     image: resource7,
     type: "Excel",
+  },
+];
+
+export const homepageStats = [
+  {
+    sub: "No of Courses",
+    value: "30",
+    icon: <IconBook className="text-primary w-5 h-5" />,
+  },
+  {
+    sub: "No of Employees",
+    value: "500",
+
+    icon: <IconUsers className="text-primary w-5 h-5" />,
+  },
+  {
+    sub: "No of Completed Courses",
+    value: "500",
+    icon: <IconChecks className="text-primary w-5 h-5" />,
+  },
+  {
+    sub: "No of Enrollments",
+    value: "100",
+    icon: <IconBook className="text-primary w-5 h-5" />,
+  },
+];
+export const topratedCourses = [
+  {
+    course: "Introduction to JavaScript",
+    ratings: 5.0,
+  },
+  {
+    course: "Introduction to JavaScript",
+    ratings: 4.5,
+  },
+  {
+    course: "Introduction to JavaScript",
+    ratings: 4.2,
+  },
+  {
+    course: "JavaScript for Beginners",
+    ratings: 3.8,
+  },
+  {
+    course: "Learn JavaScript",
+    ratings: 3.5,
+  },
+];
+import avatar from "@/public/avatar.svg";
+export const mostActiveEmployees = [
+  {
+    name: "John Doe",
+    email: "taiwo@gmail.com",
+    picture: avatar,
+    coursesTaken: 5,
+  },
+  {
+    name: "Jane Doe",
+    email: "taiwo@gmail.com",
+    picture: avatar,
+    coursesTaken: 4,
+  },
+  {
+    name: "John Doe",
+    email: "taiwo@gmail.com",
+    picture: avatar,
+    coursesTaken: 3,
+  },
+  {
+    name: "Jane Doe",
+    email: "taiwo@gmail.com",
+    picture: "",
+    coursesTaken: 2,
+  },
+  {
+    name: "John Doe",
+    email: "taiwo@gmail.com",
+    picture: "",
+    coursesTaken: 1,
   },
 ];
