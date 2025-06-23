@@ -1,18 +1,30 @@
+// components/IntroVideoUpload.tsx
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { Label } from "../ui/label";
 import ImageUpload from "./ImageUpload";
 import VideoUpload from "./VideoUpload";
-const IntroVideoUpload = () => {
-  const [videoFile, setVideoFile] = useState<string | null>(null);
-  const [imageFile, setImageFile] = useState<string | null>(null);
 
+const IntroVideoUpload = ({ courseInput, setCourseInput }: any) => {
   return (
     <div className="grid gap-6 mt-4">
       <Label htmlFor="intro-video">Course Intro Video (Optional)</Label>
-      <VideoUpload file={videoFile} setFile={setVideoFile} />
+      <VideoUpload 
+        file={courseInput.introVideoUrl}
+        setFile={(url) => setCourseInput(prev => ({ 
+          ...prev, 
+          introVideoUrl: url 
+        }))}
+      />
+      
       <Label htmlFor="image-upload">Display Image (Optional)</Label>
-      <ImageUpload file={imageFile} setFile={setImageFile} />
+      <ImageUpload 
+        file={courseInput.displayImageUrl}
+        setFile={(url) => setCourseInput(prev => ({ 
+          ...prev, 
+          displayImageUrl: url 
+        }))}
+      />
     </div>
   );
 };

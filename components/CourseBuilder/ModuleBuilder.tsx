@@ -1,74 +1,59 @@
 "use client";
 import React, { useState } from "react";
-import { IconCirclePlus, IconInfoCircle } from "@tabler/icons-react";
+import { IconCirclePlus } from "@tabler/icons-react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogClose,
 } from "@/components/ui/dialog";
 import { v4 as uuidv4 } from "uuid";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
-import { Module } from "@/lib/types";
 import ModuleItem from "./ModuleItem";
 import { Accordion } from "@/components/ui/accordion";
-const ModuleBuilder = () => {
-  const [modules, setModules] = useState<Module[]>([]);
+
+interface ModuleBuilderProps {
+  modules: any[];
+  setModules: React.Dispatch<React.SetStateAction<any[]>>;
+  courseId: string;
+  onDeleteModule: (moduleId: string) => void;
+}
+
+const ModuleBuilder = ({
+  modules,
+  setModules,
+  courseId,
+  onDeleteModule
+}: ModuleBuilderProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeModule, setActiveModule] = useState<number | null>(null);
-  const [newModule, setNewModule] = useState<Module>({
+  const [activeModuleIndex, setActiveModuleIndex] = useState<number | null>(null);
+  const [newModule, setNewModule] = useState({
     id: uuidv4(),
-    name:
-      activeModule && modules[activeModule] ? modules[activeModule]?.name : "",
-    summary:
-      activeModule && modules[activeModule]
-        ? modules[activeModule]?.summary
-        : "",
-    lessons:
-      activeModule && modules[activeModule]
-        ? modules[activeModule]?.lessons
-        : [],
-    quizzes:
-      activeModule && modules[activeModule]
-        ? modules[activeModule]?.quizzes
-        : [],
+    name: "",
+    summary: "",
+    lessons: [],
+    quizzes: [],
   });
 
-  const handleOpen = () => setIsOpen(true);
-  const handleClose = () => setIsOpen(false);
-
   const handleUpdateModule = () => {
-    if (activeModule !== null) {
-      console.log("activeModule dey");
-      setModules((prev) =>
-        prev.map((prevModule, index) =>
-          index === activeModule ? newModule : prevModule
+    if (activeModuleIndex !== null) {
+      setModules(prev => 
+        prev.map((mod, idx) => 
+          idx === activeModuleIndex ? newModule : mod
         )
       );
     } else {
-      console.log("no active module");
       setModules([...modules, newModule]);
     }
+    resetModuleState();
   };
-  console.log(activeModule, "Active module", newModule);
-  const handleChange = (
-    e:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    const { id, value } = e.target;
-    setNewModule((prev) => ({
-      ...prev,
-      [id]: value,
-    }));
-  };
-  const handleAddNewModule = () => {
-    setActiveModule(null);
+
+  const resetModuleState = () => {
+    setActiveModuleIndex(null);
     setNewModule({
       id: uuidv4(),
       name: "",
@@ -76,72 +61,84 @@ const ModuleBuilder = () => {
       lessons: [],
       quizzes: [],
     });
+    setIsOpen(false);
   };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { id, value } = e.target;
+    setNewModule(prev => ({ ...prev, [id]: value }));
+  };
+
+  const handleEditModule = (index: number) => {
+    setActiveModuleIndex(index);
+    setNewModule(modules[index]);
+    setIsOpen(true);
+  };
+
   return (
     <div className="p-6 h-full">
       {modules.length === 0 ? (
-        <p>No module created yet</p>
+        <p>No modules created yet</p>
       ) : (
         <Accordion type="single" collapsible className="grid gap-4">
-          {modules.map((module, index) => {
-            return (
-              <ModuleItem
-                key={index}
-                module={module}
-                setModules={setModules}
-                moduleIndex={index}
-                openModule={handleOpen}
-                setActiveModule={setActiveModule}
-              />
-            );
-          })}
+          {modules.map((module, index) => (
+            <ModuleItem
+              key={module.id}
+              module={module}
+              moduleIndex={index}
+              onEdit={() => handleEditModule(index)}
+              onDelete={() => onDeleteModule(module.id)}
+            />
+          ))}
         </Accordion>
       )}
+      
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
-          <button
-            className="bg-primary mt-2 text-white text-sm px-4 p-2 rounded-md flex items-center "
-            onClick={handleAddNewModule}
-          >
-            <IconCirclePlus className="inline mr-2 w-5 h-5" />
+          <Button className="mt-4 flex items-center gap-2">
+            <IconCirclePlus className="w-5 h-5" />
             Add New Module
-          </button>
+          </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-xl" aria-describedby={undefined}>
+        <DialogContent className="sm:max-w-xl">
           <DialogHeader>
-            <DialogTitle>Module</DialogTitle>
+            <DialogTitle>
+              {activeModuleIndex !== null ? "Edit Module" : "Create Module"}
+            </DialogTitle>
           </DialogHeader>
           <div className="grid gap-4">
-            <Label htmlFor="name">Module Name</Label>
+            <Label htmlFor="name">Module Name *</Label>
             <Input
               id="name"
-              className="col-span-3"
-              onChange={handleChange}
               value={newModule.name}
+              onChange={handleChange}
+              required
             />
           </div>
           <div className="grid gap-4">
             <Label htmlFor="summary">Module Summary</Label>
             <Textarea
-              placeholder="Type summary here."
               id="summary"
-              rows={4}
-              onChange={handleChange}
               value={newModule.summary}
+              onChange={handleChange}
+              rows={4}
             />
           </div>
-          <div className="flex justify-between">
-            <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
-            <DialogClose asChild>
-              <Button
-                className="bg-primary hover:bg-primary/90"
-                onClick={handleUpdateModule}
-              >
-                Update Module
-              </Button>
-            </DialogClose>
+          <div className="flex justify-end gap-3">
+            <Button 
+              variant="outline" 
+              onClick={() => setIsOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleUpdateModule}
+              disabled={!newModule.name.trim()}
+            >
+              {activeModuleIndex !== null ? "Update" : "Create"}
+            </Button>
           </div>
         </DialogContent>
       </Dialog>

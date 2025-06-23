@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/Form/Input";
 import Image from "next/image";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa6";
 import { UserInputs } from "@/lib/types";
-import { LuLoader2 } from "react-icons/lu";
+import { LuLoaderCircle } from "react-icons/lu";
 const SecondSetup = ({
   userInputs,
   handleChange,
@@ -122,7 +122,7 @@ const SecondSetup = ({
           <FaArrowLeft /> Go back
         </button>
         <button className="flex items-center gap-2 bg-primary rounded-md text-white  px-4 md:px-6 max-md:text-sm p-2 mt-4">
-          {loading && <LuLoader2 className="animate-spin w-4 h-4 mr-2" />}
+          {loading && <LuLoaderCircle className="animate-spin w-4 h-4 mr-2" />}
           Submit
         </button>
       </div>

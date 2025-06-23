@@ -5,8 +5,9 @@ import FormHeading from "@/components/ui/Form/FormHeading";
 import LoginForm from "../../../components/Login/LoginForm";
 import FormFooter from "@/components/ui/Form/FormFooter";
 import toast from "react-hot-toast";
-import { useMutation } from "@apollo/client";
-import { LOGIN } from "@/lib/graphql";
+import { useLazyQuery, useMutation } from "@apollo/client";
+import { LOGIN, USER_ORGANIZATION } from "@/lib/graphql";
+import Cookies from "js-cookie";
 
 const Login = () => {
   const [error, setError] = useState<string | null>(null);
@@ -17,6 +18,8 @@ const Login = () => {
   const [loginInput, { loading }] = useMutation(
       LOGIN
     );
+
+  const [getUserOrg] = useLazyQuery(USER_ORGANIZATION);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,6 +59,21 @@ const Login = () => {
           role: data.login.user.role,
         }),
       });
+
+      const {
+        data: { userOrganization },
+      } = await getUserOrg({
+        context: {
+          headers: {
+            Authorization: `Bearer ${data.login.accessToken}`,
+          },
+        },
+        fetchPolicy: "network-only", // ensure fresh data
+      });
+
+      // ─── 3. STORE ORG INFO IN COOKIES ─────────────────────────────────────
+      Cookies.set("organizationId", userOrganization._id, { expires: 7 });
+      Cookies.set("logo", userOrganization.logo, { expires: 7 });
 
       router.push(`/dashboard`);
     } catch (err: any) {

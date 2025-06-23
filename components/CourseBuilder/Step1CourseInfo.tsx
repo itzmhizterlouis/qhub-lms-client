@@ -1,7 +1,18 @@
 import React from "react";
 import CourseInfoForm from "./CourseInfoForm";
 import { Button } from "../ui/button";
-const Step1CourseInfo = ({ onNext }: { onNext: () => void }) => {
+
+interface Step1CourseInfoProps {
+  onNext: () => void;
+  courseInput: any;
+  setCourseInput: React.Dispatch<React.SetStateAction<any>>;
+}
+
+const Step1CourseInfo = ({ 
+  onNext, 
+  courseInput, 
+  setCourseInput 
+}: Step1CourseInfoProps) => {
   return (
     <div className="h-full">
       <div className="border-b border-b-gray-300 p-6 max-md:p-4">
@@ -11,9 +22,15 @@ const Step1CourseInfo = ({ onNext }: { onNext: () => void }) => {
         </p>
       </div>
       <div className="p-6 max-md:p-4">
-        <CourseInfoForm />
+        <CourseInfoForm 
+          courseInput={courseInput} 
+          setCourseInput={setCourseInput} 
+        />
         <div className="flex justify-end mt-4 ">
-          <Button className="bg-primary hover:bg-primary/90" onClick={onNext}>
+          <Button 
+            className="bg-primary hover:bg-primary/90" 
+            onClick={onNext}
+          >
             Next
           </Button>
         </div>

@@ -21,6 +21,15 @@ export const CREATE_ORGANIZATION = gql`
   }
 `;
 
+export const USER_ORGANIZATION = gql`
+  query {
+    userOrganization {
+      _id
+      logo
+    }
+  }
+`;
+
 export const CREATE_USER_ORGANIZATION = gql`
   mutation CreateOrganization($input: CreateUserAdminInput!) {
     addOrganizationUser(createUserOrganizationInput: $input) {
@@ -56,7 +65,43 @@ export const LOGIN = gql`
 export const VERIFY_USER = gql`
   mutation VerifyUser($input: VerifyUserInput!) {
     verifyUser(verifyUser: $input) {
-      message 
+      message
+      status
+    }
+  }
+`;
+
+export const ADD_COURSE = gql`
+  mutation AddCourse($courseInput: CourseInput!) {
+    addCourse(courseInput: $courseInput) {
+      _id
+      title
+    }
+  }
+`;
+
+export const ADD_COURSE_MODULE = gql`
+  mutation AddCourseModule($courseModuleInput: CourseModuleInput!) {
+    addCourseModule(courseModuleInput: $courseModuleInput) {
+      _id
+      name
+    }
+  }
+`;
+
+export const EDIT_COURSE_MODULE = gql`
+  mutation EditCourseModule($editCourseModuleInput: EditCourseModuleInput!) {
+    editCourseModule(editCourseModuleInput: $editCourseModuleInput) {
+      _id
+      name
+    }
+  }
+`;
+
+export const DELETE_COURSE_MODULE = gql`
+  mutation DeleteCourseModule($moduleId: String!) {
+    deleteCourseModule(moduleId: $moduleId) {
+      message
       status
     }
   }

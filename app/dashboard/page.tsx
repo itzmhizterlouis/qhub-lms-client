@@ -1,16 +1,13 @@
 import AdminHome from "@/components/Admin/AdminHome";
 import React from "react";
 import EmployeeHome from "@/components/EmployeeHome";
+import { cookies } from "next/headers";
 const Page = () => {
-  const user = {
-    role: "admin",
-    name: "Hey",
-  };
-  const role = user.role;
+  const cookieStore = cookies();
+    const role = cookieStore.get("role")?.value;
   return (
     <div className="w-full h-full p-6">
-      {role === "admin" && <AdminHome />}
-      {role === "employee" && <EmployeeHome />}
+      {role === "organizationOwner" || role === "admin" ? <AdminHome /> : <EmployeeHome />}
     </div>
   );
 };
