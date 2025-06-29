@@ -106,3 +106,19 @@ export const DELETE_COURSE_MODULE = gql`
     }
   }
 `;
+
+export const INVITE_LMS_USER = gql`
+  mutation addLmsUser($lmsUserInput: CreateLmsUserInput!) {
+    addLmsUser(lmsUserInput: $lmsUserInput) {
+      _id
+      accessToken
+      createdAt
+      email
+      firstName
+      lastName
+      onboarded
+      role
+      updatedAt
+    }
+  }
+`;

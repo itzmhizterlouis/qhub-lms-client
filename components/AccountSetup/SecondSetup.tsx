@@ -6,6 +6,7 @@ import Image from "next/image";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa6";
 import { UserInputs } from "@/lib/types";
 import { LuLoaderCircle } from "react-icons/lu";
+import { LucideLoader2 } from "lucide-react";
 const SecondSetup = ({
   userInputs,
   handleChange,
@@ -93,7 +94,7 @@ const SecondSetup = ({
         )}
         {isUploading && (
           <div className="flex items-center gap-2 mt-2">
-            <LuLoader2 className="animate-spin w-4 h-4" />
+            <LucideLoader2 className="animate-spin w-4 h-4" />
             <span className="text-sm text-neutral-500">Uploading... Please wait</span>
           </div>
         )}
