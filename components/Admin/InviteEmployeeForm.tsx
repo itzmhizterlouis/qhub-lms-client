@@ -28,7 +28,7 @@ const InviteEmployeeForm = ({ onBulkUpload }: { onBulkUpload: () => void }) => {
     const lastName = lastNameRef.current?.value?.trim();
     const email = emailRef.current?.value?.trim();
     const organizationId = Cookies.get("organizationId");
-    const token = Cookies.get("flyghtt_token");
+    const token = Cookies.get("accessToken");
 
     if (!firstName || !lastName || !email || !role) {
       setError("Please fill all fields.");

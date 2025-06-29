@@ -1,10 +1,10 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Employee } from "@/lib/types";
 import { DataTable } from "./DataTable";
-import { employees } from "@/lib/adminData";
 import { Button } from "../../ui/button";
+import Cookies from "js-cookie";
 
 import {
   DropdownMenu,
@@ -25,8 +25,40 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { GET_LMS_USERS } from "@/lib/graphql";
+import { useLazyQuery, useQuery } from "@apollo/client";
+import { start } from "repl";
 
 const EmployeeTable = () => {
+  const organizationId = Cookies.get("organizationId");
+  const token = Cookies.get("accessToken");
+
+  const [fetchEmployees, { data, loading, error }] = useLazyQuery(GET_LMS_USERS);
+
+  // Fetch employees on mount
+  useEffect(() => {
+    if (organizationId && token) {
+      fetchEmployees({
+        variables: { organizationId },
+        context: {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      });
+    }
+  }, [organizationId, token, fetchEmployees]);
+
+  // Map API data to Employee[]
+  const employees: Employee[] = (data?.getOrganizationUsers || []).map((user: any) => ({
+    id: user._id,
+    name: `${user.firstName} ${user.lastName}`,
+    role: user.role,
+    status: user.onboarded ? "active" : "inactive",
+    startDate: new Date(user.createdAt).toLocaleDateString(),
+    email: user.email,
+  }));
+
   const columns: ColumnDef<Employee>[] = [
     {
       id: "select",
@@ -142,9 +174,12 @@ const EmployeeTable = () => {
     },
   ];
 
+  if (loading) return <div className="container mx-auto">Loading employees...</div>;
+  if (error) return <div className="container mx-auto text-red-500">Error: {error.message}</div>;
+
   return (
     <div className="container mx-auto ">
-      <DataTable columns={columns} data={employees} />
+      <DataTable columns={columns} data={employees || []} />
     </div>
   );
 };

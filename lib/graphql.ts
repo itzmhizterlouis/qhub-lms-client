@@ -122,3 +122,17 @@ export const INVITE_LMS_USER = gql`
     }
   }
 `;
+
+export const GET_LMS_USERS = gql`
+  query getOrganizationUsers($organizationId: String!) {
+    getOrganizationUsers(organizationId: $organizationId) {
+      _id
+      firstName
+      lastName
+      email
+      role
+      onboarded
+      createdAt
+    }
+  }
+`;
