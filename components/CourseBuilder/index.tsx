@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Step1CourseInfo from "./Step1CourseInfo";
 import Step2ModuleBuilder from "./Step2ModuleBuilder";
 import { IconCircleCheckFilled } from "@tabler/icons-react";
@@ -7,7 +7,9 @@ import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 import { useCourses } from "@/hooks/useCourses";
+import { useCoursePersistence } from "@/hooks/useCoursePersistence";
 import { CourseInput } from "@/lib/types";
+import { Button } from "@/components/ui/button";
 
 const steps = [
   {
@@ -19,23 +21,34 @@ const steps = [
 ];
 
 const CourseBuilder = () => {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [courseId, setCourseId] = useState<string | null>(null);
-  const [courseInput, setCourseInput] = useState({
-    title: "",
-    description: "",
-    durationHours: "",
-    durationMinutes: "",
-    category: "",
-    introVideoUrl: "",
-    displayImageUrl: "",
-  });
+  const {
+    state,
+    updateCourseInput,
+    updateModules,
+    setCurrentStep,
+    setCourseId,
+    clearState,
+  } = useCoursePersistence();
+
+  const { currentStep, courseId, courseInput, modules } = state;
 
   // Debug: Log course input changes
-  React.useEffect(() => {
+  useEffect(() => {
     console.log("Course input updated:", courseInput);
   }, [courseInput]);
-  const [modules, setModules] = useState<any[]>([]);
+
+  // Show notification when state is restored
+  useEffect(() => {
+    const savedState = localStorage.getItem('qhub_course_creation_state');
+    if (savedState) {
+      const parsedState = JSON.parse(savedState);
+      const isRecent = Date.now() - parsedState.lastSaved < 24 * 60 * 60 * 1000;
+      if (isRecent && (parsedState.courseInput.title || parsedState.modules.length > 0)) {
+        toast.success("Your course creation progress has been restored!");
+      }
+    }
+  }, []);
+
   const { createCourse, addCourseLoading } = useCourses();
   const organizationId = Cookies.get("organizationId") || "";
   const router = useRouter();
@@ -109,50 +122,66 @@ const CourseBuilder = () => {
 
   const handleSubmitCourse = () => {
     // This would be handled in Step2ModuleBuilder
+    clearState(); // Clear saved state after successful submission
     router.push("/dashboard/courses");
     toast.success("Course published successfully!");
   };
 
   return (
     <>
-      <div className="flex gap-4 items-center my-2">
-        {steps.map((step, index) => (
-          <div
-            key={index}
-            onClick={() => handleStepClick(index + 1)}
-            className={`flex items-center gap-2 text-sm max-md:text-xs cursor-pointer ${
-              index + 1 < currentStep ? "text-primary" : "text-gray-500"
-            }`}
-          >
-            {index + 1 < currentStep ? (
-              <IconCircleCheckFilled className="w-5 h-5 text-primary" />
-            ) : (
-              <span
-                className={`w-5 h-5 flex items-center justify-center rounded-full ${
-                  index + 1 === currentStep
-                    ? "bg-primary text-white"
-                    : "bg-gray-300"
-                }`}
-              >
-                {index + 1}
-              </span>
-            )}
-            <span
-              className={`${
-                index + 1 <= currentStep ? "font-semibold" : "font-normal"
+      <div className="flex gap-4 items-center my-2 justify-between">
+        <div className="flex gap-4 items-center">
+          {steps.map((step, index) => (
+            <div
+              key={index}
+              onClick={() => handleStepClick(index + 1)}
+              className={`flex items-center gap-2 text-sm max-md:text-xs cursor-pointer ${
+                index + 1 < currentStep ? "text-primary" : "text-gray-500"
               }`}
             >
-              {step.label}
-            </span>
-          </div>
-        ))}
+              {index + 1 < currentStep ? (
+                <IconCircleCheckFilled className="w-5 h-5 text-primary" />
+              ) : (
+                <span
+                  className={`w-5 h-5 flex items-center justify-center rounded-full ${
+                    index + 1 === currentStep
+                      ? "bg-primary text-white"
+                      : "bg-gray-300"
+                  }`}
+                >
+                  {index + 1}
+                </span>
+              )}
+              <span
+                className={`${
+                  index + 1 <= currentStep ? "font-semibold" : "font-normal"
+                }`}
+              >
+                {step.label}
+              </span>
+            </div>
+          ))}
+        </div>
+        {(courseInput.title || modules.length > 0) && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              clearState();
+              toast.success("Draft cleared successfully!");
+            }}
+            className="text-red-600 hover:text-red-700"
+          >
+            Clear Draft
+          </Button>
+        )}
       </div>
       <div className="w-full mt-4 min-h-[calc(100vh-200px)] bg-white rounded-md  border border-gray-300">
         {currentStep === 1 && (
           <Step1CourseInfo 
             onNext={handleNextStep} 
             courseInput={courseInput}
-            setCourseInput={setCourseInput}
+            setCourseInput={updateCourseInput}
             loading={addCourseLoading}
           />
         )}
@@ -162,7 +191,7 @@ const CourseBuilder = () => {
             onNext={handleSubmitCourse}
             courseId={courseId}
             modules={modules}
-            setModules={setModules}
+            setModules={updateModules}
           />
         )}
       </div>

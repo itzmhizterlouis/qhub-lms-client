@@ -13,10 +13,12 @@ const QuizBuilder = ({
   module,
   setModules,
   propQuiz,
+  modules,
 }: {
   module: Module;
-  setModules: React.Dispatch<React.SetStateAction<Module[]>>;
+  setModules: (modules: Module[]) => void;
   propQuiz?: Quiz;
+  modules: Module[];
 }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const defaultQuiz = {
@@ -33,18 +35,17 @@ const QuizBuilder = ({
     try {
       if (propQuiz) {
         // Update existing quiz
-        setModules((prev) =>
-          prev.map((prevModule) =>
-            prevModule.id === module.id
-              ? {
-                  ...module,
-                  quizzes: prevModule.quizzes?.map((q) =>
-                    q.id === quiz.id ? quiz : q
-                  ),
-                }
-              : module
-          )
+        const updatedModules = modules.map((prevModule: any) =>
+          prevModule.id === module.id
+            ? {
+                ...module,
+                quizzes: prevModule.quizzes?.map((q: any) =>
+                  q.id === quiz.id ? quiz : q
+                ),
+              }
+            : prevModule
         );
+        setModules(updatedModules);
       } else {
         // Create new quiz via API
         const quizInput: QuizInput = {
@@ -105,13 +106,12 @@ const QuizBuilder = ({
             toast.success("Quiz created successfully!");
           }
 
-          setModules((prev) =>
-            prev.map((prevModule) =>
-              prevModule.id === module.id
-                ? { ...module, quizzes: [...(module.quizzes || []), newQuiz] }
-                : module
-            )
+          const updatedModules = modules.map((prevModule: any) =>
+            prevModule.id === module.id
+              ? { ...module, quizzes: [...(module.quizzes || []), newQuiz] }
+              : prevModule
           );
+          setModules(updatedModules);
         } else {
           toast.error("Failed to create quiz");
         }

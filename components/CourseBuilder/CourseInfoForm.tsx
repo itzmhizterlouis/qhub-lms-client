@@ -13,7 +13,7 @@ import {
 
 interface CourseInfoFormProps {
   courseInput: any;
-  setCourseInput: React.Dispatch<React.SetStateAction<any>>;
+  setCourseInput: (updates: Partial<any>) => void;
 }
 
 const CourseInfoForm = ({ 
@@ -24,11 +24,11 @@ const CourseInfoForm = ({
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { id, value } = e.target;
-    setCourseInput((prev: any) => ({ ...prev, [id]: value }));
+    setCourseInput({ [id]: value });
   };
 
   const handleCategoryChange = (value: string) => {
-    setCourseInput((prev: any) => ({ ...prev, category: value }));
+    setCourseInput({ category: value });
   };
 
   return (

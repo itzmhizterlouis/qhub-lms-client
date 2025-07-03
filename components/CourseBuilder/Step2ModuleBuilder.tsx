@@ -10,7 +10,7 @@ interface Step2ModuleBuilderProps {
   onPrevious: () => void;
   courseId: string;
   modules: any[];
-  setModules: React.Dispatch<React.SetStateAction<any[]>>;
+  setModules: (modules: any[]) => void;
 }
 
 const Step2ModuleBuilder = ({
@@ -47,7 +47,8 @@ const Step2ModuleBuilder = ({
 
   const handleDeleteModule = async (moduleId: string) => {
     try {
-      setModules(prev => prev.filter(m => m.id !== moduleId));
+      const updatedModules = modules.filter((m: any) => m.id !== moduleId);
+      setModules(updatedModules);
       toast.success("Module removed");
     } catch (error) {
       console.error("Module deletion failed:", error);

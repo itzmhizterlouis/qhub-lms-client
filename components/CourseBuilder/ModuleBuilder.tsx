@@ -23,7 +23,7 @@ import QuizBuilder from "../QuizBuilder";
 
 interface ModuleBuilderProps {
   modules: any[];
-  setModules: React.Dispatch<React.SetStateAction<any[]>>;
+  setModules: (modules: any[]) => void;
   courseId: string;
   onDeleteModule: (moduleId: string) => void;
 }
@@ -54,11 +54,10 @@ const ModuleBuilder = ({
   const handleUpdateModule = async () => {
     if (activeModuleIndex !== null) {
       // Update existing module
-      setModules(prev => 
-        prev.map((mod, idx) => 
-          idx === activeModuleIndex ? newModule : mod
-        )
+      const updatedModules = modules.map((mod, idx) => 
+        idx === activeModuleIndex ? newModule : mod
       );
+      setModules(updatedModules);
       resetModuleState();
     } else {
       // Create new module via API
@@ -78,7 +77,7 @@ const ModuleBuilder = ({
             _id: result._id
           };
           
-          setModules(prev => [...prev, createdModule]);
+          setModules([...modules, createdModule]);
           toast.success("Module created successfully!");
         } else {
           toast.error("Failed to create module");
@@ -218,6 +217,7 @@ const ModuleBuilder = ({
             setModules={setModules}
             propLesson={activeLesson}
             moduleId={currentModuleId}
+            modules={modules}
           />
         </DialogContent>
       </Dialog>
@@ -232,6 +232,7 @@ const ModuleBuilder = ({
             module={modules.find(m => m.id === currentModuleId) || { id: "", quizzes: [] }}
             setModules={setModules}
             propQuiz={undefined}
+            modules={modules}
           />
         </DialogContent>
       </Dialog>

@@ -6,7 +6,7 @@ import { Loader2 } from "lucide-react";
 interface Step1CourseInfoProps {
   onNext: () => void;
   courseInput: any;
-  setCourseInput: React.Dispatch<React.SetStateAction<any>>;
+  setCourseInput: (updates: Partial<any>) => void;
   loading?: boolean;
 }
 

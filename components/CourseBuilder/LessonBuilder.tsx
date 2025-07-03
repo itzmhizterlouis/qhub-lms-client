@@ -21,11 +21,13 @@ const LessonBuilder = ({
   setModules,
   propLesson,
   moduleId,
+  modules,
 }: {
   module: Module;
-  setModules: React.Dispatch<React.SetStateAction<Module[]>>;
+  setModules: (modules: Module[]) => void;
   propLesson?: Lesson;
   moduleId: string;
+  modules: Module[];
 }) => {
   const [featuredImage, setFeaturedImage] = useState<string | null>(
     propLesson?.featuredImage || ""
@@ -126,26 +128,24 @@ const LessonBuilder = ({
         };
 
         if (propLesson) {
-          setModules((prev) =>
-            prev.map((prevModule) =>
-              prevModule.id === module.id
-                ? {
-                    ...module,
-                    lessons: prevModule.lessons?.map((l) =>
-                      l.id === lesson.id ? newLesson : l
-                    ),
-                  }
-                : module
-            )
+          const updatedModules = modules.map((prevModule: any) =>
+            prevModule.id === module.id
+              ? {
+                  ...module,
+                  lessons: prevModule.lessons?.map((l: any) =>
+                    l.id === lesson.id ? newLesson : l
+                  ),
+                }
+              : prevModule
           );
+          setModules(updatedModules);
         } else {
-          setModules((prev) =>
-            prev.map((prevModule) =>
-              prevModule.id === module.id
-                ? { ...module, lessons: [...(module.lessons || []), newLesson] }
-                : module
-            )
+          const updatedModules = modules.map((prevModule: any) =>
+            prevModule.id === module.id
+              ? { ...module, lessons: [...(module.lessons || []), newLesson] }
+              : prevModule
           );
+          setModules(updatedModules);
         }
 
         toast.success("Lesson created successfully!");
