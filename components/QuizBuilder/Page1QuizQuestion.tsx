@@ -31,6 +31,7 @@ const Page1QuizQuestion = ({
   handleOptionChange,
   question,
   handleAnswerExplanationChange,
+  handleTrueFalseChange,
   isEditing,
 }: {
   onNext: () => void;
@@ -43,6 +44,7 @@ const Page1QuizQuestion = ({
   handleReactQuillChange: (value: string) => void;
   question: Question;
   handleOptionChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleTrueFalseChange?: (value: string) => void;
 }) => {
   console.log(questionTypes, "questionTypes");
   return (
@@ -141,14 +143,17 @@ const Page1QuizQuestion = ({
 
         {question.questionType === "true/false" ? (
           <div className="bg-gray-200 rounded-md p-4">
-            <RadioGroup defaultValue="option-one">
+            <RadioGroup 
+              value={(question as any).trueFalseSelection || ""} 
+              onValueChange={handleTrueFalseChange || (() => {})}
+            >
               <div className="flex items-center space-x-2 bg-white p-4 rounded-md">
-                <RadioGroupItem value="option-one" id="option-one" />
-                <Label htmlFor="option-one">True</Label>
+                <RadioGroupItem value="true" id="true" />
+                <Label htmlFor="true">True</Label>
               </div>
               <div className="flex items-center space-x-2 bg-white p-4 rounded-md">
-                <RadioGroupItem value="option-two" id="option-two" />
-                <Label htmlFor="option-two">False</Label>
+                <RadioGroupItem value="false" id="false" />
+                <Label htmlFor="false">False</Label>
               </div>
             </RadioGroup>
           </div>

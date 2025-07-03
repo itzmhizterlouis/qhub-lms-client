@@ -1,5 +1,4 @@
 "use client";
-import { v4 as uuidv4 } from "uuid";
 import React, { useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
@@ -10,16 +9,23 @@ import "react-quill/dist/quill.snow.css";
 import { IconLink, IconX } from "@tabler/icons-react";
 import ImageUpload from "./ImageUpload";
 import VideoUpload from "./VideoUpload";
-import { Lesson, Module } from "@/lib/types";
+import { Lesson, Module, LessonInput } from "@/lib/types";
 import { DialogFooter, DialogClose } from "@/components/ui/dialog";
+import { useCourses } from "@/hooks/useCourses";
+import { useUploadThing } from "@/utils/uploadthing";
+import { Loader2 } from "lucide-react";
+import toast from "react-hot-toast";
+
 const LessonBuilder = ({
   module,
   setModules,
   propLesson,
+  moduleId,
 }: {
   module: Module;
   setModules: React.Dispatch<React.SetStateAction<Module[]>>;
   propLesson?: Lesson;
+  moduleId: string;
 }) => {
   const [featuredImage, setFeaturedImage] = useState<string | null>(
     propLesson?.featuredImage || ""
@@ -31,23 +37,30 @@ const LessonBuilder = ({
     propLesson?.exerciseFiles || []
   );
   const [lesson, setLesson] = useState<Lesson>({
-    id: propLesson?.id || uuidv4(),
+    id: propLesson?.id || "",
     name: propLesson?.name || "",
     content: propLesson?.content || "",
     featuredImage: propLesson?.featuredImage || "",
     video: propLesson?.video || "",
-    exerciseFiles: propLesson?.exerciseFiles || [],
+    exerciseFiles: propLesson?.exerciseFiles || []
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { createLesson, addLessonLoading } = useCourses();
+  const { startUpload } = useUploadThing("documentUploader");
+
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files) {
       setAttachments((prev) => [...prev, ...Array.from(files)]);
     }
   };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setLesson((prev) => ({ ...prev, [id]: value }));
   };
+
   const handleQuillChange = (value: string) => {
     setLesson((prev) => ({ ...prev, content: value }));
   };
@@ -57,39 +70,99 @@ const LessonBuilder = ({
       prev.filter((file) => file.name !== fileToRemove.name)
     );
   };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const newLesson = {
-      ...lesson,
-      featuredImage: featuredImage!,
-      video: lessonVideo!,
-      exerciseFiles: attachments,
-    };
-    if (propLesson) {
-      setModules((prev) =>
-        prev.map((prevModule) =>
-          prevModule.id === module.id
-            ? {
-                ...module,
-                lessons: prevModule.lessons?.map((l) =>
-                  l.id === lesson.id ? newLesson : l
-                ),
-              }
-            : module
-        )
-      );
-    } else {
-      setModules((prev) =>
-        prev.map((prevModule) =>
-          prevModule.id === module.id
-            ? { ...module, lessons: [...module.lessons!, newLesson] }
-            : module
-        )
-      );
+
+  const uploadAttachments = async (files: File[]): Promise<string> => {
+    if (files.length === 0) return "";
+    
+    try {
+      const uploaded = await startUpload(files);
+      if (uploaded && uploaded.length > 0) {
+        // Return the first file URL as the extra resources URL
+        return uploaded[0].url;
+      }
+      return "";
+    } catch (error) {
+      console.error("Error uploading attachments:", error);
+      return "";
     }
-    console.log(newLesson, "newLesson");
   };
-  console.log("lesson", lesson);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      // Check if moduleId is a valid MongoDB ID
+      if (!moduleId || moduleId.startsWith('temp-')) {
+        toast.error("Please save the module first before creating lessons");
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Upload attachments if any
+      const extraResourcesUrl = await uploadAttachments(attachments);
+
+      // Create lesson input
+      const lessonInput: LessonInput = {
+        contentUrl: lesson.content, // Using content as contentUrl
+        extraResourcesUrl: extraResourcesUrl || "nothing",
+        imageUrl: featuredImage || "",
+        index: module.lessons?.length || 0, // Use current lessons count as index
+        moduleId: moduleId,
+        name: lesson.name,
+        videoUrl: lessonVideo || "",
+      };
+
+      // Create lesson via API
+      const result = await createLesson(lessonInput);
+
+      if (result?._id) {
+        const newLesson = {
+          ...lesson,
+          _id: result._id,
+          featuredImage: featuredImage!,
+          video: lessonVideo!,
+          exerciseFiles: attachments,
+        };
+
+        if (propLesson) {
+          setModules((prev) =>
+            prev.map((prevModule) =>
+              prevModule.id === module.id
+                ? {
+                    ...module,
+                    lessons: prevModule.lessons?.map((l) =>
+                      l.id === lesson.id ? newLesson : l
+                    ),
+                  }
+                : module
+            )
+          );
+        } else {
+          setModules((prev) =>
+            prev.map((prevModule) =>
+              prevModule.id === module.id
+                ? { ...module, lessons: [...(module.lessons || []), newLesson] }
+                : module
+            )
+          );
+        }
+
+        toast.success("Lesson created successfully!");
+        console.log("Lesson created:", result);
+      }
+    } catch (error: any) {
+      console.error("Error creating lesson:", error);
+      if (error.message?.includes("authentication") || error.message?.includes("log in")) {
+        toast.error("Authentication failed. Please log in again.");
+        // You might want to redirect to login here
+      } else {
+        toast.error("Failed to create lesson");
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -100,6 +173,7 @@ const LessonBuilder = ({
           className="col-span-3"
           onChange={handleChange}
           value={lesson.name}
+          required
         />
       </div>
       <div className="grid gap-2 mt-4">
@@ -174,6 +248,7 @@ const LessonBuilder = ({
                 <button
                   onClick={() => removeAttachment(file)}
                   className="text-red-500 hover:text-red-700"
+                  type="button"
                 >
                   <IconX className="w-5 h-5" />
                 </button>
@@ -187,8 +262,19 @@ const LessonBuilder = ({
           <Button variant="outline">Cancel</Button>
         </DialogClose>
         <DialogClose asChild>
-          <Button className="bg-primary hover:bg-primary/90" type="submit">
-            Update Module
+          <Button 
+            className="bg-primary hover:bg-primary/90" 
+            type="submit"
+            disabled={addLessonLoading || isSubmitting}
+          >
+            {addLessonLoading || isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Creating...
+              </>
+            ) : (
+              "Create Lesson"
+            )}
           </Button>
         </DialogClose>
       </DialogFooter>

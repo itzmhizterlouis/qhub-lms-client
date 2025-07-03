@@ -1,12 +1,14 @@
 "use client";
-import { v4 as uuidv4 } from "uuid";
-
 import React, { useState } from "react";
 import { Quiz } from "@/lib/types";
 import Step2QuizQuestion from "./Step2QuizQuestion";
 import Step1QuizInfo from "./Step1QuizInfo";
 import { IconCircleCheckFilled } from "@tabler/icons-react";
 import { Module } from "@/lib/types";
+import { useCourses } from "@/hooks/useCourses";
+import { QuizInput, QuizQuestionInput } from "@/lib/types";
+import toast from "react-hot-toast";
+import { DialogClose } from "../ui/dialog";
 const QuizBuilder = ({
   module,
   setModules,
@@ -18,35 +20,109 @@ const QuizBuilder = ({
 }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const defaultQuiz = {
-    id: uuidv4(),
+    id: "",
     name: "",
     summary: "",
     questions: [],
   };
   const [quizPageNo, setQuizPageNo] = useState(2);
   const [quiz, setQuiz] = useState<Quiz>(propQuiz || defaultQuiz);
-  const handleSubmit = () => {
-    if (propQuiz) {
-      setModules((prev) =>
-        prev.map((prevModule) =>
-          prevModule.id === module.id
-            ? {
-                ...module,
-                quizzes: prevModule.quizzes?.map((q) =>
-                  q.id === quiz.id ? quiz : q
-                ),
+  const { createModuleQuiz, createQuestion, addQuizLoading, addQuestionLoading } = useCourses();
+
+  const handleSubmit = async () => {
+    try {
+      if (propQuiz) {
+        // Update existing quiz
+        setModules((prev) =>
+          prev.map((prevModule) =>
+            prevModule.id === module.id
+              ? {
+                  ...module,
+                  quizzes: prevModule.quizzes?.map((q) =>
+                    q.id === quiz.id ? quiz : q
+                  ),
+                }
+              : module
+          )
+        );
+      } else {
+        // Create new quiz via API
+        const quizInput: QuizInput = {
+          moduleId: module.id,
+          title: quiz.name,
+          summary: quiz.summary,
+        };
+
+        const result = await createModuleQuiz(quizInput);
+
+        if (result?._id) {
+          const newQuiz = {
+            ...quiz,
+            id: result._id,
+            _id: result._id,
+          };
+
+          // Create questions via API if there are any
+          if (quiz.questions.length > 0) {
+            try {
+              for (const question of quiz.questions) {
+                // Convert frontend question format to API format
+                let options = [];
+                
+                if (question.questionType === "true/false") {
+                  // For true/false questions, create standard options based on user selection
+                  const trueFalseSelection = (question as any).trueFalseSelection;
+                  options = [
+                    { text: "True", isCorrect: trueFalseSelection === "true" },
+                    { text: "False", isCorrect: trueFalseSelection === "false" }
+                  ];
+                } else {
+                  // For other question types, use the provided options
+                  options = question.options.map(option => ({
+                    text: option.name,
+                    isCorrect: option.isCorrect
+                  }));
+                }
+
+                const questionInput: QuizQuestionInput = {
+                  quizId: result._id,
+                  text: question.question,
+                  type: question.questionType,
+                  point: question.points,
+                  displayPoint: true, // You might want to make this configurable
+                  options: options
+                };
+
+                const questionResult = await createQuestion(questionInput);
+                console.log("Question created:", questionResult);
               }
-            : module
-        )
-      );
-    } else {
-      setModules((prev) =>
-        prev.map((prevModule) =>
-          prevModule.id === module.id
-            ? { ...module, quizzes: [...module.quizzes!, quiz] }
-            : module
-        )
-      );
+              toast.success("Quiz and questions created successfully!");
+            } catch (questionError: any) {
+              console.error("Error creating questions:", questionError);
+              toast.error("Quiz created but failed to create some questions");
+            }
+          } else {
+            toast.success("Quiz created successfully!");
+          }
+
+          setModules((prev) =>
+            prev.map((prevModule) =>
+              prevModule.id === module.id
+                ? { ...module, quizzes: [...(module.quizzes || []), newQuiz] }
+                : module
+            )
+          );
+        } else {
+          toast.error("Failed to create quiz");
+        }
+      }
+    } catch (error: any) {
+      console.error("Error creating quiz:", error);
+      if (error.message?.includes("authentication") || error.message?.includes("log in")) {
+        toast.error("Authentication failed. Please log in again.");
+      } else {
+        toast.error("Failed to create quiz");
+      }
     }
   };
   const handleChange = (
@@ -123,6 +199,7 @@ const QuizBuilder = ({
           handlePrevQuizPage={handlePrevQuizPage}
           handleNextStep={handleNextStep}
           handlePrevStep={handlePrevStep}
+          loading={addQuizLoading || addQuestionLoading}
         />
       )}
     </>

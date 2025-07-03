@@ -13,13 +13,15 @@ interface ModuleItemProps {
   moduleIndex: number;
   onEdit: () => void;
   onDelete: () => void;
+  onAddItem: (itemType: string) => void;
 }
 
 const ModuleItem = ({
   module,
   moduleIndex,
   onEdit,
-  onDelete
+  onDelete,
+  onAddItem
 }: ModuleItemProps) => {
   return (
     <AccordionItem
@@ -75,7 +77,7 @@ const ModuleItem = ({
             ))}
           </div>
         )}
-        <ModuleItemCategories />
+        <ModuleItemCategories onAddItem={onAddItem} moduleId={module.id} />
       </AccordionContent>
     </AccordionItem>
   );

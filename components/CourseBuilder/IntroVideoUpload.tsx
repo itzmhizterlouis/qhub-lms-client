@@ -20,11 +20,21 @@ const IntroVideoUpload = ({ courseInput, setCourseInput }: any) => {
       <Label htmlFor="image-upload">Display Image (Optional)</Label>
       <ImageUpload 
         file={courseInput.displayImageUrl}
-        setFile={(url) => setCourseInput(prev => ({ 
-          ...prev, 
-          displayImageUrl: url 
-        }))}
+        setFile={(url) => {
+          console.log("Setting display image URL:", url);
+          setCourseInput(prev => ({ 
+            ...prev, 
+            displayImageUrl: url 
+          }));
+        }}
       />
+      
+      {/* Debug section */}
+      <div className="mt-4 p-4 bg-gray-100 rounded-md">
+        <h3 className="font-semibold mb-2">Debug Info:</h3>
+        <p className="text-sm">Current displayImageUrl: {courseInput.displayImageUrl || "Not set"}</p>
+        <p className="text-sm">Current introVideoUrl: {courseInput.introVideoUrl || "Not set"}</p>
+      </div>
     </div>
   );
 };

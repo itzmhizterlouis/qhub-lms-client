@@ -1,13 +1,9 @@
 import React from "react";
 import ModuleBuilder from "./ModuleBuilder";
 import { Button } from "../ui/button";
-import { useMutation } from "@apollo/client";
-import { 
-  ADD_COURSE_MODULE, 
-  EDIT_COURSE_MODULE,
-  DELETE_COURSE_MODULE 
-} from "@/lib/graphql";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import Cookies from "js-cookie";
 
 interface Step2ModuleBuilderProps {
   onNext: () => void;
@@ -25,66 +21,37 @@ const Step2ModuleBuilder = ({
   setModules
 }: Step2ModuleBuilderProps) => {
   const router = useRouter();
-  const [addCourseModule] = useMutation(ADD_COURSE_MODULE);
-  const [editCourseModule] = useMutation(EDIT_COURSE_MODULE);
-  const [deleteCourseModule] = useMutation(DELETE_COURSE_MODULE);
 
   const handleSubmit = async () => {
+    // Check if user is authenticated
+    const accessToken = Cookies.get("accessToken");
+    if (!accessToken) {
+      toast.error("Please log in to submit course");
+      router.push("/auth/login");
+      return;
+    }
+
     try {
-      // Create/update modules
-      for (const module of modules) {
-        if (module._id) {
-          // Update existing module
-          await editCourseModule({
-            variables: {
-              editCourseModuleInput: {
-                id: module._id,
-                courseId,
-                name: module.name,
-                summary: module.summary
-              }
-            }
-          });
-        } else {
-          // Create new module
-          const { data } = await addCourseModule({
-            variables: {
-              courseModuleInput: {
-                courseId,
-                name: module.name,
-                summary: module.summary
-              }
-            }
-          });
-          
-          // Update local ID
-          if (data?.addCourseModule?._id) {
-            setModules(prev => 
-              prev.map(m => 
-                m.id === module.id 
-                  ? { ...m, _id: data.addCourseModule._id } 
-                  : m
-              )
-            );
-          }
-        }
-      }
-      
+      // All modules are already created via API, just proceed to next step
       onNext();
-    } catch (error) {
-      console.error("Module submission failed:", error);
-      alert("Failed to submit modules");
+    } catch (error: any) {
+      console.error("Course submission failed:", error);
+      if (error.message?.includes("authentication") || error.message?.includes("log in")) {
+        toast.error("Authentication failed. Please log in again.");
+        router.push("/auth/login");
+      } else {
+        toast.error("Failed to submit course");
+      }
     }
   };
 
   const handleDeleteModule = async (moduleId: string) => {
     try {
-      await deleteCourseModule({
-        variables: { moduleId }
-      });
       setModules(prev => prev.filter(m => m.id !== moduleId));
+      toast.success("Module removed");
     } catch (error) {
       console.error("Module deletion failed:", error);
+      toast.error("Failed to delete module");
     }
   };
 

@@ -1,17 +1,20 @@
 import React from "react";
 import CourseInfoForm from "./CourseInfoForm";
 import { Button } from "../ui/button";
+import { Loader2 } from "lucide-react";
 
 interface Step1CourseInfoProps {
   onNext: () => void;
   courseInput: any;
   setCourseInput: React.Dispatch<React.SetStateAction<any>>;
+  loading?: boolean;
 }
 
 const Step1CourseInfo = ({ 
   onNext, 
   courseInput, 
-  setCourseInput 
+  setCourseInput,
+  loading = false
 }: Step1CourseInfoProps) => {
   return (
     <div className="h-full">
@@ -30,8 +33,16 @@ const Step1CourseInfo = ({
           <Button 
             className="bg-primary hover:bg-primary/90" 
             onClick={onNext}
+            disabled={loading}
           >
-            Next
+            {loading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Creating...
+              </>
+            ) : (
+              "Next"
+            )}
           </Button>
         </div>
       </div>

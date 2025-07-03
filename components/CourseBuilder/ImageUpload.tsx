@@ -22,14 +22,21 @@ const ImageUpload = ({
   const uploadImage = async (file: File) => {
     setIsUploading(true);
     try {
+      console.log("Starting image upload for file:", file.name, "Size:", file.size, "Type:", file.type);
       const uploaded = await startUpload([file]);
+      console.log("Upload result:", uploaded);
       if (uploaded?.[0]?.url) {
+        console.log("Setting file URL:", uploaded[0].url);
         setFile(uploaded[0].url);
+        console.log("File URL set successfully");
       } else {
-        throw new Error("Upload failed");
+        console.error("Upload failed - no URL returned");
+        throw new Error("Upload failed - no URL returned");
       }
     } catch (error) {
       console.error("Image upload error:", error);
+      // Show user-friendly error message
+      alert(`Failed to upload image: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setIsUploading(false);
     }

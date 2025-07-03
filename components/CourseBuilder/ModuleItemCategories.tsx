@@ -1,21 +1,19 @@
 import React from "react";
 import { IconSquareRoundedPlusFilled } from "@tabler/icons-react";
-import { Lesson } from "@/lib/types";
+
 const MODULEITEMCATGORIES = ["lesson", "quiz"];
+
 const ModuleItemCategories = ({
-  openDialog,
-  setSelectedItem,
-  setActiveLesson,
+  onAddItem,
+  moduleId,
 }: {
-  openDialog: React.Dispatch<React.SetStateAction<boolean>>;
-  setSelectedItem: React.Dispatch<React.SetStateAction<string | null>>;
-  setActiveLesson: React.Dispatch<React.SetStateAction<Lesson | undefined>>;
+  onAddItem: (itemType: string) => void;
+  moduleId?: string;
 }) => {
   const handleClick = (item: string) => {
-    setSelectedItem(item);
-    openDialog(true);
-    setActiveLesson(undefined);
+    onAddItem(item);
   };
+
   return (
     <div className="flex gap-2 items-center">
       {MODULEITEMCATGORIES.map((moduleItem, index) => {
@@ -39,6 +37,7 @@ const ModuleItemCategories = ({
         return (
           <button
             key={index}
+            type="button"
             className={`flex items-center gap-2 text-sm border capitalize ${borderColor} p-2 rounded-md ${hoverColor}`}
             onClick={() => handleClick(moduleItem)}
           >

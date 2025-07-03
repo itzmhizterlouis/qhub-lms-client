@@ -3,12 +3,11 @@ import React, { useState } from "react";
 import Step1CourseInfo from "./Step1CourseInfo";
 import Step2ModuleBuilder from "./Step2ModuleBuilder";
 import { IconCircleCheckFilled } from "@tabler/icons-react";
-import { useMutation } from "@apollo/client";
-import { ADD_COURSE } from "@/lib/graphql";
-// import { useOrganization } from "@/context/OrganizationContext";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
+import { useCourses } from "@/hooks/useCourses";
+import { CourseInput } from "@/lib/types";
 
 const steps = [
   {
@@ -31,13 +30,19 @@ const CourseBuilder = () => {
     introVideoUrl: "",
     displayImageUrl: "",
   });
+
+  // Debug: Log course input changes
+  React.useEffect(() => {
+    console.log("Course input updated:", courseInput);
+  }, [courseInput]);
   const [modules, setModules] = useState<any[]>([]);
-  const [addCourse] = useMutation(ADD_COURSE);
+  const { createCourse, addCourseLoading } = useCourses();
   const organizationId = Cookies.get("organizationId") || "";
-  // const { currentOrganization } = useOrganization();
   const router = useRouter();
 
   const handleNextStep = async () => {
+    console.log("Current course input state:", courseInput);
+    
     // Validate required fields
     if (
       !courseInput.title ||
@@ -50,32 +55,46 @@ const CourseBuilder = () => {
       return;
     }
 
+    // Check if user is authenticated
+    const accessToken = Cookies.get("accessToken");
+    if (!accessToken) {
+      toast.error("Please log in to create a course");
+      router.push("/auth/login");
+      return;
+    }
+
     try {
       const duration = `${courseInput.durationHours}h ${courseInput.durationMinutes}m`;
-      const { data } = await addCourse({
-        variables: {
-          courseInput: {
-            title: courseInput.title,
-            description: courseInput.description,
-            duration,
-            category: courseInput.category,
-            introVideoUrl: courseInput.introVideoUrl,
-            displayImageUrl: courseInput.displayImageUrl,
-            organizationId: organizationId,
-          },
-        },
-      });
+      const courseInputData: CourseInput = {
+        title: courseInput.title,
+        description: courseInput.description,
+        duration,
+        category: courseInput.category,
+        introVideoUrl: courseInput.introVideoUrl || "",
+        displayImageUrl: courseInput.displayImageUrl || "",
+        organizationId: organizationId,
+      };
+
+      console.log("Course input data being sent:", courseInputData);
+      console.log("Display image URL:", courseInputData.displayImageUrl);
+
+      const result = await createCourse(courseInputData);
       
-      if (data?.addCourse?._id) {
-        setCourseId(data.addCourse._id);
+      if (result?._id) {
+        setCourseId(result._id);
         setCurrentStep(2);
         toast.success("Course created successfully!");
       } else {
         toast.error("Failed to create course");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Course creation failed:", error);
-      toast.error("Failed to create course");
+      if (error.message?.includes("authentication") || error.message?.includes("log in")) {
+        toast.error("Authentication failed. Please log in again.");
+        router.push("/auth/login");
+      } else {
+        toast.error("Failed to create course");
+      }
     }
   };
 
@@ -90,7 +109,7 @@ const CourseBuilder = () => {
 
   const handleSubmitCourse = () => {
     // This would be handled in Step2ModuleBuilder
-    router.push("/courses");
+    router.push("/dashboard/courses");
     toast.success("Course published successfully!");
   };
 
@@ -134,6 +153,7 @@ const CourseBuilder = () => {
             onNext={handleNextStep} 
             courseInput={courseInput}
             setCourseInput={setCourseInput}
+            loading={addCourseLoading}
           />
         )}
         {currentStep === 2 && courseId && (

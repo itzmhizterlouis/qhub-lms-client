@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 
 import { Button } from "../ui/button";
+import { Loader2 } from "lucide-react";
 
 import QuestionBoard from "./QuestionBoard";
 import Page1QuizQuestion from "./Page1QuizQuestion";
@@ -18,6 +18,7 @@ const Step2QuizQuestion = ({
   handleNextQuizPage,
   handlePrevQuizPage,
   quizPageNo,
+  loading,
 }: {
   handleNextStep: () => void;
   handlePrevStep: () => void;
@@ -28,6 +29,7 @@ const Step2QuizQuestion = ({
   handlePrevQuizPage: () => void;
   quizPageNo: number;
   setQuiz: React.Dispatch<React.SetStateAction<Quiz>>;
+  loading?: boolean;
 }) => {
   const [editIndex, setEditIndex] = useState<number | null>(null);
   const questions = quiz.questions;
@@ -84,7 +86,7 @@ const Step2QuizQuestion = ({
           ? {
               ...prevQuestion,
               questionType: value,
-              options: [{ id: uuidv4(), name: "", isCorrect: false }],
+              options: [{ id: `temp-option-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`, name: "", isCorrect: false }],
             }
           : prevQuestion
       ),
@@ -97,7 +99,7 @@ const Step2QuizQuestion = ({
         ...prevQuestion,
         options: [
           ...prevQuestion.options,
-          { id: uuidv4(), name: "", isCorrect: false },
+          { id: `temp-option-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`, name: "", isCorrect: false },
         ],
       })),
     }));
@@ -112,6 +114,20 @@ const Step2QuizQuestion = ({
           prevOption.id === id ? { ...prevOption, name: value } : prevOption
         ),
       })),
+    }));
+  };
+
+  const handleTrueFalseChange = (value: string) => {
+    setQuiz((prev) => ({
+      ...prev,
+      questions: prev.questions.map((prevQ, idx) =>
+        idx === activeQuestionIndex
+          ? {
+              ...prevQ,
+              trueFalseSelection: value,
+            }
+          : prevQ
+      ),
     }));
   };
   const handleEditQuestion = (index: number) => {
@@ -129,12 +145,12 @@ const Step2QuizQuestion = ({
     const newQuestions = [
       ...questions,
       {
-        id: uuidv4(),
+        id: `temp-question-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
         question: "",
         questionType: "true/false",
         points: 1,
         description: "",
-        options: [{ id: uuidv4(), name: "", isCorrect: false }],
+        options: [{ id: `temp-option-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`, name: "", isCorrect: false }],
         answerExplanation: "",
       },
     ];
@@ -156,6 +172,7 @@ const Step2QuizQuestion = ({
           question={activeQuestion}
           isEditing={editIndex !== null}
           handleAnswerExplanationChange={handleAnswerExplanationChange}
+          handleTrueFalseChange={handleTrueFalseChange}
         />
       )}
       {quizPageNo === 2 && (
@@ -175,8 +192,16 @@ const Step2QuizQuestion = ({
                 className="bg-primary hover:bg-primary/90"
                 type="submit"
                 onClick={onSubmit}
+                disabled={loading}
               >
-                {isEditQuiz ? "Update Quiz" : "Save & Next"}
+                {loading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Creating...
+                  </>
+                ) : (
+                  isEditQuiz ? "Update Quiz" : "Save & Next"
+                )}
               </Button>
             </DialogClose>
           </div>
